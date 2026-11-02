@@ -38,4 +38,12 @@ function validateSignupFields(fields = {}) {
   return errors;
 }
 
-module.exports = { validateSignupFields };
+const validationExports = { validateSignupFields };
+
+if (typeof module === "object" && module.exports) {
+  module.exports = validationExports;
+}
+
+if (typeof globalThis === "object") {
+  globalThis.validateSignupFields = validateSignupFields;
+}

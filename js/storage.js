@@ -69,4 +69,13 @@ async function createAccount(account) {
   }
 }
 
-module.exports = { getAccounts, createAccount };
+const storageExports = { getAccounts, createAccount };
+
+if (typeof module === "object" && module.exports) {
+  module.exports = storageExports;
+}
+
+if (typeof globalThis === "object") {
+  globalThis.getAccounts = getAccounts;
+  globalThis.createAccount = createAccount;
+}

@@ -218,7 +218,7 @@ input {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 30px;
-  margin: 0 0 17px;
+  margin: 0 0 7px;
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -321,6 +321,29 @@ input {
 .input-wrap input::placeholder {
   color: #8a968f;
   opacity: 1;
+}
+
+.visibility-toggle {
+  display: grid;
+  width: 20px;
+  height: 24px;
+  flex: 0 0 20px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #73877a;
+  cursor: pointer;
+}
+
+.visibility-toggle:focus-visible {
+  outline: 2px solid #87a892;
+  outline-offset: 1px;
+}
+
+.visibility-toggle .input-icon {
+  pointer-events: none;
 }
 
 .input-icon {
@@ -429,6 +452,27 @@ input {
   color: #6b7a71;
   font-size: 8px;
   line-height: 1.1;
+}
+
+.field-error,
+.form-status {
+  margin: 0;
+  color: #b42318;
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.field-error[hidden],
+.form-status[hidden] {
+  display: none;
+}
+
+.form-field input[aria-invalid="true"] {
+  color: #b42318;
+}
+
+.form-field:has(.field-error:not([hidden])) .input-wrap {
+  border-color: #b42318;
 }
 
 .confirm-field {

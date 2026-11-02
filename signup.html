@@ -65,51 +65,60 @@
           <h2 id="signup-heading">Create account</h2>
           <p class="form-intro">Use your university email to get started.</p>
 
-          <fieldset class="role-selector">
-            <legend class="visually-hidden">Account type</legend>
-            <input id="role-student" name="role" type="radio" value="student" checked>
-            <label for="role-student">Student</label>
-            <input id="role-advisor" name="role" type="radio" value="advisor">
-            <label for="role-advisor">Advisor</label>
-          </fieldset>
+          <form class="signup-form" novalidate>
+            <fieldset class="role-selector">
+              <legend class="visually-hidden">Account type</legend>
+              <input id="role-student" name="role" type="radio" value="student" checked>
+              <label for="role-student">Student</label>
+              <input id="role-advisor" name="role" type="radio" value="advisor">
+              <label for="role-advisor">Advisor</label>
+            </fieldset>
 
-          <form class="signup-form">
             <div class="form-field">
               <label for="full-name">Full name</label>
               <div class="input-wrap">
                 <span class="input-icon icon-user" aria-hidden="true"></span>
-                <input id="full-name" name="fullName" type="text" placeholder="Enter your full name" autocomplete="name">
+                <input id="full-name" name="fullName" type="text" placeholder="Enter your full name" autocomplete="name" aria-describedby="full-name-error">
               </div>
+              <small class="field-error" id="full-name-error" hidden></small>
             </div>
 
             <div class="form-field">
               <label for="university-email">University email</label>
               <div class="input-wrap">
                 <span class="input-icon icon-mail" aria-hidden="true"></span>
-                <input id="university-email" name="email" type="email" placeholder="you@university.edu" autocomplete="email">
+                <input id="university-email" name="email" type="email" placeholder="you@university.edu" autocomplete="email" aria-describedby="university-email-error">
               </div>
+              <small class="field-error" id="university-email-error" hidden></small>
             </div>
 
             <div class="form-field password-field">
               <label for="password">Password</label>
               <div class="input-wrap">
                 <span class="input-icon icon-lock" aria-hidden="true"></span>
-                <input id="password" name="password" type="password" placeholder="Create a password" autocomplete="new-password">
-                <span class="input-icon icon-eye" aria-hidden="true"></span>
+                <input id="password" name="password" type="password" placeholder="Create a password" autocomplete="new-password" aria-describedby="password-hint password-error">
+                <button class="visibility-toggle" type="button" aria-label="Show password" aria-pressed="false">
+                  <span class="input-icon icon-eye" aria-hidden="true"></span>
+                </button>
               </div>
-              <small class="field-hint">At least 8 characters</small>
+              <small class="field-hint" id="password-hint">At least 8 characters</small>
+              <small class="field-error" id="password-error" hidden></small>
             </div>
 
             <div class="form-field confirm-field">
               <label for="confirm-password">Confirm password</label>
               <div class="input-wrap">
                 <span class="input-icon icon-lock" aria-hidden="true"></span>
-                <input id="confirm-password" name="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password">
-                <span class="input-icon icon-eye" aria-hidden="true"></span>
+                <input id="confirm-password" name="confirmPassword" type="password" placeholder="Re-enter your password" autocomplete="new-password" aria-describedby="confirm-password-error">
+                <button class="visibility-toggle" type="button" aria-label="Show confirm password" aria-pressed="false">
+                  <span class="input-icon icon-eye" aria-hidden="true"></span>
+                </button>
               </div>
+              <small class="field-error" id="confirm-password-error" hidden></small>
             </div>
 
-            <button class="submit-button" type="button">Create account</button>
+            <p class="form-status" role="alert" hidden></p>
+            <button class="submit-button" type="submit">Create account</button>
           </form>
 
           <p class="login-prompt">Already have an account? <a href="login.html">Log in</a></p>
@@ -122,5 +131,8 @@
         </footer>
       </section>
     </main>
+    <script defer src="js/validation.js"></script>
+    <script defer src="js/storage.js"></script>
+    <script defer src="js/signup.js"></script>
   </body>
 </html>
