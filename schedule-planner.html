@@ -7,6 +7,7 @@
 
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="css/schedule-planner.css">
+        <script src="js/planner-logic.js" defer></script>
         <script src="js/schedule-planner.js" defer></script>
     </head>
     <body class="planner-page">
@@ -120,7 +121,9 @@
                             <textarea id="event-description" name="description" rows="4"
                                 placeholder="Add notes or details about the event..."></textarea>
 
-                            <button type="submit" class="add-event-btn">Add Event</button>
+                            <span id="event-error" class="field-error" role="alert" aria-live="polite"></span>
+                            <button id="event-submit" type="submit" class="add-event-btn">Add Event</button>
+                            <button id="cancel-edit" type="button" class="cancel-edit-btn" hidden>Cancel Edit</button>
                         </form>
                     </section>
                 </div>
@@ -128,5 +131,24 @@
                 <p class="calendar-legend">Deadlines in amber &bull; Personal events in green</p>
             </main>
         </div>
+
+        <dialog id="event-details-dialog" aria-labelledby="event-details-title">
+            <div class="event-dialog-header">
+                <h2 id="event-details-title"></h2>
+                <button id="event-details-close" type="button" aria-label="Close event details">&times;</button>
+            </div>
+            <dl class="event-details-list">
+                <div><dt>Date</dt><dd id="event-details-date"></dd></div>
+                <div><dt>Time</dt><dd id="event-details-time"></dd></div>
+                <div><dt>Location</dt><dd id="event-details-location"></dd></div>
+                <div><dt>Event type</dt><dd id="event-details-type"></dd></div>
+                <div><dt>Description</dt><dd id="event-details-description"></dd></div>
+            </dl>
+            <span id="event-dialog-error" class="field-error" role="alert" aria-live="polite"></span>
+            <div class="event-dialog-actions">
+                <button id="event-delete" type="button" class="delete-event-btn">Delete</button>
+                <button id="event-edit" type="button" class="add-event-btn">Edit</button>
+            </div>
+        </dialog>
     </body>
 </html>

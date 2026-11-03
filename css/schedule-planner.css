@@ -185,19 +185,35 @@
     background: #edf7ef;
 }
 .calendar-event {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2px;
     margin-top: 5px;
-    padding: 5px;
+    padding: 4px 5px;
+    border: 0;
     border-radius: 4px;
-    font-size: 11px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
     overflow-wrap: anywhere;
 }
+.calendar-event:focus-visible,
+.event-dialog-actions button:focus-visible,
+#event-details-close:focus-visible,
+.cancel-edit-btn:focus-visible {
+    outline: 2px solid #204f37;
+    outline-offset: 2px;
+}
 .calendar-event.deadline {
-    background: #fff0c2;
-    color: #785400;
+    background: #fff0de;
+    color: #85451a;
 }
 .calendar-event.personal {
-    background: #d8f0df;
-    color: #204f37;
+    background: #dceee7;
+    color: #074c35;
 }
 .calendar-panel,
 .event-panel {
@@ -323,8 +339,102 @@
     text-align: center;
 }
 .week-hour-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
     min-height: 55px;
+    padding: 3px;
     border: 1px solid #e4ebe6;
     border-radius: 6px;
     background: #f5f7f6;
+}
+.week-all-day-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    min-height: 38px;
+    padding: 3px;
+    border: 1px solid #e4ebe6;
+    border-radius: 6px;
+    background: #f5f7f6;
+}
+.cancel-edit-btn {
+    padding: 10px;
+    border: 1px solid #d0dbd4;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #204f37;
+    font-weight: 700;
+    cursor: pointer;
+}
+#event-details-dialog {
+    width: min(440px, calc(100% - 32px));
+    max-height: min(80vh, 640px);
+    padding: 24px;
+    border: 1px solid #d6e0da;
+    border-radius: 12px;
+    color: #14281e;
+}
+#event-details-dialog::backdrop {
+    background: rgb(20 40 30 / 45%);
+}
+.event-dialog-header,
+.event-dialog-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.event-dialog-header h2 {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+#event-details-close {
+    flex-shrink: 0;
+    padding: 4px 9px;
+    border: 0;
+    border-radius: 6px;
+    background: #e7f2ed;
+    color: #204f37;
+    font-size: 22px;
+    cursor: pointer;
+}
+.event-details-list {
+    display: grid;
+    gap: 14px;
+    margin: 22px 0;
+}
+.event-details-list > div {
+    display: grid;
+    gap: 4px;
+}
+.event-details-list dt {
+    color: #6b7a71;
+    font-size: 12px;
+    font-weight: 700;
+}
+.event-details-list dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+.event-dialog-actions {
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+.event-dialog-actions button {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.event-dialog-actions .add-event-btn {
+    margin-top: 0;
+}
+.delete-event-btn {
+    background: #fff0de;
+    color: #85451a;
 }
