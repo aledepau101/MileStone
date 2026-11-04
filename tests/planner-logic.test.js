@@ -47,6 +47,7 @@ test("validates event title and date", () => {
   assert.deepEqual(validateEvent({ title: "  ", date: "2026-02-30" }), {
     title: "Event title is required.",
     date: "Enter a valid date.",
+    endDate: "Enter a valid end date."
   });
 });
 
