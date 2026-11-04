@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#204f37">
+<title>Log in | MileStone</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="login.html">MileStone</a>
+</header>
+<main class="page-layout">
+  <section class="intro-panel" aria-labelledby="welcome-heading">
+    <div class="intro-content">
+      <h1 id="welcome-heading">Welcome back</h1>
+      <p class="intro-copy">
+        Plan, write, and finish your thesis with your advisor<br class="desktop-break">
+        by your side. Log in to pick up where you left off.
+      </p>
+      <section class="highlight-card" aria-labelledby="highlight-heading">
+        <h2 id="highlight-heading">Keep your thesis on track</h2>
+        <p>Track milestones, manage drafts, and get advisor<br class="desktop-break">
+        feedback in one place.</p>
+      </section>
+    </div>
+  </section>
+
+  <section class="form-panel" aria-labelledby="login-heading">
+    <div class="signup-card">
+      <h2 id="login-heading">Log in</h2>
+      <p class="form-intro">Use the email you signed up with.</p>
+
+      <form class="signup-form login-form" novalidate>
+        <fieldset class="role-selector">
+          <legend class="visually-hidden">Account type</legend>
+          <input id="role-student" name="role" type="radio" value="student" checked>
+          <label for="role-student">Student</label>
+          <input id="role-advisor" name="role" type="radio" value="advisor">
+          <label for="role-advisor">Advisor</label>
+        </fieldset>
+
+        <div class="form-field">
+          <label for="login-email">University email</label>
+          <div class="input-wrap">
+            <span class="input-icon icon-mail" aria-hidden="true"></span>
+            <input id="login-email" name="email" type="email" placeholder="you@university.edu" autocomplete="email" aria-describedby="login-email-error">
+          </div>
+          <small class="field-error" id="login-email-error" hidden></small>
+        </div>
+
+        <div class="form-field password-field">
+          <label for="login-password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon icon-lock" aria-hidden="true"></span>
+            <input id="login-password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" aria-describedby="login-password-error">
+            <button class="visibility-toggle" type="button" aria-label="Show password" aria-pressed="false">
+              <span class="input-icon icon-eye" aria-hidden="true"></span>
+            </button>
+          </div>
+          <small class="field-error" id="login-password-error" hidden></small>
+        </div>
+
+        <p class="form-status" role="alert" hidden></p>
+        <button class="submit-button" type="submit">Log in</button>
+      </form>
+
+      <p class="login-prompt">Don't have an account? <a href="signup.html">Create an account</a></p>
+    </div>
+    <footer class="site-footer">
+      <span>© 2026 MileStone</span><span aria-hidden="true">•</span>
+      <a href="#privacy">Privacy</a><span aria-hidden="true">•</span>
+      <a href="#terms">Terms</a>
+    </footer>
+  </section>
+</main>
+<script defer src="js/validation.js"></script>
+<script defer src="js/auth.js"></script>
+<script defer src="js/storage.js"></script>
+<script defer src="js/login.js"></script>
+</body>
+</html>

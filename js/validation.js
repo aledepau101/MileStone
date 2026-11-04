@@ -38,7 +38,24 @@ function validateSignupFields(fields = {}) {
   return errors;
 }
 
-const validationExports = { validateSignupFields };
+function validateLoginFields(fields = {}) {
+  const { email, password } = fields ?? {};
+  const errors = {};
+
+  if (isBlank(email)) {
+    errors.email = "University email is required.";
+  } else if (!EMAIL_PATTERN.test(email.trim())) {
+    errors.email = "Enter a valid email address.";
+  }
+
+  if (isBlank(password)) {
+    errors.password = "Password is required.";
+  }
+
+  return errors;
+}
+
+const validationExports = { validateSignupFields, validateLoginFields };
 
 if (typeof module === "object" && module.exports) {
   module.exports = validationExports;
@@ -46,4 +63,5 @@ if (typeof module === "object" && module.exports) {
 
 if (typeof globalThis === "object") {
   globalThis.validateSignupFields = validateSignupFields;
+  globalThis.validateLoginFields = validateLoginFields;
 }
