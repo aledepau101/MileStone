@@ -328,3 +328,10 @@
     border-radius: 6px;
     background: #f5f7f6;
 }
+
+/* Allow the 24-hour Week View to scroll vertically. */
+#calendar-grid.week-view {
+    max-height: 500px;
+    overflow-y: auto;
+    align-content: start;
+}
