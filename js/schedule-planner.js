@@ -34,16 +34,6 @@ function getMonday(date) {
     return monday;
 }
 
-// Create weekday headings.
-function createDayHeaders() {
-    dayNames.forEach((day) => {
-        const heading = document.createElement("div");
-        heading.className = "calendar-day-header";
-        heading.textContent = day;
-        calendarGrid.appendChild(heading);
-    });
-}
-
 // Display the monthly calendar.
 function renderMonth() {
     calendarGrid.innerHTML = "";
@@ -52,8 +42,6 @@ function renderMonth() {
         "en-US",
         { month: "long", year: "numeric" }
     );
-
-    createDayHeaders();
 
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -71,31 +59,62 @@ function renderMonth() {
         ) + 7;
     const today = new Date();
 
-    for(let i = 0; i < totalDays; i++) {
-        const date = new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            startDate.getDate() + i
-        );
+        const weekdayRow = document.createElement("div");
+        weekdayRow.className = "month-weekday-row";
+        dayNames.forEach((day) => {
+            const heading = document.createElement("div");
+            heading.className = "calendar-day-header";
+            heading.textContent = day;
+            weekdayRow.appendChild(heading);
+        });
+        calendarGrid.appendChild(weekdayRow);
 
-        const dayCell = document.createElement("div");
-        dayCell.className = "calendar-day";
-        dayCell.textContent = date.getDate();
-        dayCell.dataset.date = plannerLogic.getDateKey(date);
+        for (let week = 0; week < totalDays / 7; week++) {
+            const weekRow = document.createElement("div");
+            weekRow.className = "month-week-row";
+            weekRow.dataset.weekStart = plannerLogic.getDateKey(new Date(
+                startDate.getFullYear(),
+                startDate.getMonth(),
+                startDate.getDate() + week * 7
+            ));
 
-        if (date.getMonth() !== month) {
-            dayCell.classList.add("other-month");
+            for (let day = 0; day < 7; day++) {
+                const date = new Date(
+                    startDate.getFullYear(),
+                    startDate.getMonth(),
+                    startDate.getDate() + week * 7 + day
+                );
+                const dayCell = document.createElement("div");
+                dayCell.className = "calendar-day";
+                dayCell.dataset.date = plannerLogic.getDateKey(date);
+
+                const dateLabel = document.createElement("span");
+                dateLabel.className = "calendar-day-number";
+                dateLabel.textContent = String(date.getDate());
+                dayCell.appendChild(dateLabel);
+
+                if (date.getMonth() !== month) {
+                    dayCell.classList.add("other-month");
+                }
+                if (
+                    date.getFullYear() === today.getFullYear() &&
+                    date.getMonth() === today.getMonth() &&
+                    date.getDate() === today.getDate()
+                ) {
+                    dayCell.classList.add("today");
+                }
+
+                weekRow.appendChild(dayCell);
+            }
+
+            // Keep the spanning event layer separate so it cannot move date cells.
+            const eventOverlay = document.createElement("div");
+            eventOverlay.className = "month-event-overlay";
+            weekRow.appendChild(eventOverlay);
+            calendarGrid.appendChild(weekRow);
         }
-        if (
-            date.getFullYear() === today.getFullYear() &&
-            date.getMonth() === today.getMonth() &&
-            date.getDate() === today.getDate()
-        ) {
-            dayCell.classList.add("today");
-        }
 
-        calendarGrid.appendChild(dayCell);
-    }
+        calendarGrid.classList.remove("week-view");
 }
 // Display the weekly calendar with hourly rows.
 function renderWeek() {
@@ -127,6 +146,8 @@ function renderWeek() {
 
     const corner = document.createElement("div");
     corner.className = "calendar-day-header";
+    corner.style.gridColumn = "1";
+    corner.style.gridRow = "1";
     calendarGrid.appendChild(corner);
 
     for (let i = 0; i < 7; i++) {
@@ -139,6 +160,8 @@ function renderWeek() {
         const heading = document.createElement("div");
         heading.className = "calendar-day-header";
         heading.textContent = dayNames[i] + " " + date.getDate();
+        heading.style.gridColumn = String(i + 2);
+        heading.style.gridRow = "1";
 
         calendarGrid.appendChild(heading);
     }
@@ -146,6 +169,8 @@ function renderWeek() {
     const allDayLabel = document.createElement("div");
     allDayLabel.className = "week-time-label";
     allDayLabel.textContent = "All day";
+    allDayLabel.style.gridColumn = "1";
+    allDayLabel.style.gridRow = "2";
     calendarGrid.appendChild(allDayLabel);
 
     for (let day = 0; day < 7; day++) {
@@ -158,6 +183,8 @@ function renderWeek() {
         cell.className = "week-all-day-cell";
         cell.dataset.date = plannerLogic.getDateKey(date);
         cell.dataset.day = String(day);
+        cell.style.gridColumn = String(day + 2);
+        cell.style.gridRow = "2";
         calendarGrid.appendChild(cell);
     }
 
@@ -165,9 +192,11 @@ function renderWeek() {
     for (let hour = 0; hour <= 24; hour++) {
         const timeLabel = document.createElement("div");
         timeLabel.className = "week-time-label";
+        timeLabel.style.gridColumn = "1";
+        timeLabel.style.gridRow = String(hour + 3);
 
         const displayHour = hour % 12 || 12;
-        const period = hour < 12 ? "AM" : "PM";
+        const period = hour < 12 || hour === 24 ? "AM" : "PM";
 
         timeLabel.textContent = displayHour + " " + period;
         calendarGrid.appendChild(timeLabel);
@@ -177,6 +206,8 @@ function renderWeek() {
             cell.className = "week-hour-cell";
             cell.dataset.hour = String(hour);
             cell.dataset.day = String(day);
+            cell.style.gridColumn = String(day + 2);
+            cell.style.gridRow = String(hour + 3);
             cell.dataset.date = plannerLogic.getDateKey(new Date(
                 monday.getFullYear(),
                 monday.getMonth(),
@@ -201,12 +232,16 @@ function formatEventTime(time) {
     return displayHour + ":" + String(minute).padStart(2, "0") + " " + period;
 }
 
-function createEventElement(event, eventIndex) {
+function createEventElement(event, eventIndex, options = {}) {
     const eventElement = document.createElement("button");
     eventElement.type = "button";
     eventElement.className = "calendar-event";
     eventElement.dataset.eventIndex = String(eventIndex);
-    eventElement.setAttribute("aria-label", "View event: " + event.title);
+    eventElement.setAttribute(
+        "aria-label",
+        "View event: " + event.title + ", " + formatEventDateRange(event) +
+        (formatEventTimeRange(event) ? ", " + formatEventTimeRange(event) : "")
+    );
 
     if (event.type === "deadline" || event.type === "personal") {
         eventElement.classList.add(event.type);
@@ -217,7 +252,9 @@ function createEventElement(event, eventIndex) {
     title.textContent = event.title;
     eventElement.appendChild(title);
 
-    const time = formatEventTime(event.time);
+    const time = options.timeLabel === undefined
+        ? formatEventTime(event.time)
+        : options.timeLabel;
     if (time) {
         const timeElement = document.createElement("span");
         timeElement.className = "calendar-event-time";
@@ -228,6 +265,42 @@ function createEventElement(event, eventIndex) {
     return eventElement;
 }
 
+function getDateOffset(startDate, dateKey) {
+    const [startYear, startMonth, startDay] = startDate.split("-").map(Number);
+    const [year, month, day] = dateKey.split("-").map(Number);
+    return Math.round((
+        Date.UTC(year, month - 1, day) -
+        Date.UTC(startYear, startMonth - 1, startDay)
+    ) / 86400000);
+}
+
+function getEventDayRange(event, dateKey) {
+    const startDate = event.date;
+    const endDate = plannerLogic.getEventEndDate(event);
+    const startTime = plannerLogic.parseEventTime(event.time);
+    const endTime = plannerLogic.parseEventTime(event.endTime);
+
+    if (!startTime && !endTime) {
+        return null;
+    }
+
+    const isStartDate = dateKey === startDate;
+    const isEndDate = dateKey === endDate;
+    const startMinute = isStartDate && startTime
+        ? startTime.hour * 60 + startTime.minute
+        : 0;
+    let endMinute = isEndDate && endTime
+        ? endTime.hour * 60 + endTime.minute
+        : 1440;
+
+    // Keep legacy single-time events visible as a one-hour block.
+    if (isStartDate && isEndDate && startTime && !endTime) {
+        endMinute = Math.min(startMinute + 60, 1440);
+    }
+
+    return { startMinute, endMinute, isStartDate, isEndDate };
+}
+
 function renderEvents() {
     const validEvents = plannerEvents
         .map((event, index) => ({ event, index }))
@@ -236,40 +309,91 @@ function renderEvents() {
         );
 
     if (currentView === "month") {
-        calendarGrid.querySelectorAll(".calendar-day").forEach((dayCell) => {
-            validEvents
-                .filter(({ event }) => event.date === dayCell.dataset.date)
-                .forEach(({ event, index }) =>
-                    dayCell.appendChild(createEventElement(event, index))
-                );
+        const weekRows = calendarGrid.querySelectorAll(".month-week-row");
+        weekRows.forEach((weekRow) => {
+            const weekStart = weekRow.dataset.weekStart;
+            const weekEnd = plannerLogic.getDateKey(new Date(
+                Number(weekStart.slice(0, 4)),
+                Number(weekStart.slice(5, 7)) - 1,
+                Number(weekStart.slice(8, 10)) + 6
+            ));
+
+            validEvents.forEach(({ event, index }) => {
+                const eventEndDate = plannerLogic.getEventEndDate(event);
+                if (event.date > weekEnd || eventEndDate < weekStart) {
+                    return;
+                }
+
+                // Split long events at week boundaries so no segment escapes the month grid.
+                const startColumn = Math.max(0, getDateOffset(weekStart, event.date));
+                const endColumn = Math.min(6, getDateOffset(weekStart, eventEndDate));
+                const eventElement = createEventElement(event, index, {
+                    timeLabel: formatCompactEventTimeRange(event),
+                });
+                eventElement.classList.add("month-range-event");
+                eventElement.style.gridColumn =
+                    (startColumn + 1) + " / " + (endColumn + 2);
+                eventElement.style.gridRow = "1";
+                weekRow.querySelector(".month-event-overlay").appendChild(eventElement);
+            });
         });
         return;
     }
 
-    const allDayCells = calendarGrid.querySelectorAll(".week-all-day-cell");
-    const timedCells = calendarGrid.querySelectorAll(".week-hour-cell");
+    const monday = getMonday(currentDate);
+    const weekStart = plannerLogic.getDateKey(monday);
 
     validEvents.forEach(({ event, index }) => {
-        const parsedTime = plannerLogic.parseEventTime(event.time);
-        if (!parsedTime) {
-            const cell = Array.from(allDayCells).find(
-                (allDayCell) => allDayCell.dataset.date === event.date
-            );
-            if (cell) {
-                cell.appendChild(createEventElement(event, index));
-            }
+        const endDate = plannerLogic.getEventEndDate(event);
+        const startOffset = Math.max(0, getDateOffset(weekStart, event.date));
+        const endOffset = Math.min(6, getDateOffset(weekStart, endDate));
+        if (startOffset > endOffset || endDate < weekStart) {
             return;
         }
 
-        const visibleHour = Math.max(8, Math.min(20, parsedTime.hour));
-        const cell = Array.from(timedCells).find(
-            (timedCell) =>
-                timedCell.dataset.date === event.date &&
-                Number(timedCell.dataset.hour) === visibleHour
-        );
+        if (!event.time && !event.endTime) {
+            const eventElement = createEventElement(event, index);
+            eventElement.classList.add("week-all-day-event");
+            eventElement.style.gridColumn =
+                (startOffset + 2) + " / " + (endOffset + 3);
+            eventElement.style.gridRow = "2";
+            calendarGrid.appendChild(eventElement);
+            return;
+        }
 
-        if (cell) {
-            cell.appendChild(createEventElement(event, index));
+        for (let dayOffset = startOffset; dayOffset <= endOffset; dayOffset++) {
+            const dateKey = plannerLogic.getDateKey(new Date(
+                monday.getFullYear(),
+                monday.getMonth(),
+                monday.getDate() + dayOffset
+            ));
+            const range = getEventDayRange(event, dateKey);
+            if (!range || range.endMinute <= range.startMinute) {
+                continue;
+            }
+
+            const startHour = Math.floor(range.startMinute / 60);
+            const endHour = Math.ceil(range.endMinute / 60);
+            const eventElement = createEventElement(event, index, {
+                timeLabel: range.isStartDate && range.isEndDate
+                    ? formatCompactEventTimeRange(event)
+                    : range.isStartDate
+                        ? formatEventTime(event.time)
+                        : range.isEndDate
+                            ? formatEventTime(event.endTime) || "End of day"
+                            : "",
+            });
+            eventElement.classList.add("week-timed-event");
+            eventElement.style.gridColumn = String(dayOffset + 2);
+            eventElement.style.gridRow =
+                (startHour + 3) + " / " + (endHour + 3);
+            eventElement.style.marginTop =
+                (range.startMinute % 60) / 60 * 55 + "px";
+            eventElement.style.marginBottom =
+                (range.endMinute % 60 === 0
+                    ? 0
+                    : (60 - range.endMinute % 60) / 60 * 55) + "px";
+            calendarGrid.appendChild(eventElement);
         }
     });
 }
@@ -379,6 +503,21 @@ function clearPlannerFormErrors() {
         document.getElementById("date-error"),
         ""
     );
+    setPlannerFieldError(
+        document.getElementById("event-end-date"),
+        document.getElementById("end-date-error"),
+        ""
+    );
+    setPlannerFieldError(
+        document.getElementById("event-time"),
+        document.getElementById("time-error"),
+        ""
+    );
+    setPlannerFieldError(
+        document.getElementById("event-end-time"),
+        document.getElementById("end-time-error"),
+        ""
+    );
     document.getElementById("event-error").textContent = "";
 }
 
@@ -401,6 +540,47 @@ function formatEventDate(dateKey) {
     });
 }
 
+function formatEventDateRange(event) {
+    const endDate = plannerLogic.getEventEndDate(event);
+    const start = formatEventDate(event.date);
+    return endDate === event.date
+        ? start
+        : start + " - " + formatEventDate(endDate);
+}
+
+function formatEventTimeRange(event) {
+    if (!event.time) {
+        return "";
+    }
+
+    const start = formatEventTime(event.time);
+    const end = formatEventTime(event.endTime);
+    if (end) {
+        return start + " - " + end;
+    }
+
+    if (plannerLogic.getEventEndDate(event) !== event.date) {
+        return start + " - End of day";
+    }
+
+    const parsedStart = plannerLogic.parseEventTime(event.time);
+    const endMinute = Math.min(parsedStart.hour * 60 + parsedStart.minute + 60, 1440);
+    if (endMinute === 1440) {
+        return start + " - End of day";
+    }
+
+    return start + " - " + formatEventTime(
+        String(Math.floor(endMinute / 60)).padStart(2, "0") + ":" +
+        String(endMinute % 60).padStart(2, "0")
+    );
+}
+
+function formatCompactEventTimeRange(event) {
+    return formatEventTimeRange(event)
+        .replace(/\s*(AM|PM)\b/g, (period) => period.trim()[0].toLowerCase())
+        .replace(/\s+-\s+/g, "-");
+}
+
 function showEventDetails(eventIndex) {
     const event = plannerEvents[eventIndex];
     if (!event) {
@@ -409,9 +589,9 @@ function showEventDetails(eventIndex) {
 
     document.getElementById("event-details-title").textContent = event.title;
     document.getElementById("event-details-date").textContent =
-        formatEventDate(event.date);
+        formatEventDateRange(event);
     document.getElementById("event-details-time").textContent =
-        formatEventTime(event.time) || "All day";
+        formatEventTimeRange(event) || "All day";
     document.getElementById("event-details-location").textContent =
         event.location || "Not specified";
     document.getElementById("event-details-type").textContent =
@@ -440,7 +620,9 @@ function beginEventEdit() {
     editingEventIndex = eventIndex;
     form.elements.title.value = event.title;
     form.elements.date.value = event.date;
+    form.elements.endDate.value = plannerLogic.getEventEndDate(event);
     form.elements.time.value = event.time || "";
+    form.elements.endTime.value = event.endTime || "";
     form.elements.location.value = event.location || "";
     form.elements.type.value =
         event.type === "personal" ? "personal" : "deadline";
@@ -492,7 +674,9 @@ function handleEventFormSubmit(submitEvent) {
     const event = {
         title: form.elements.title.value.trim(),
         date: form.elements.date.value,
+        endDate: form.elements.endDate.value || form.elements.date.value,
         time: form.elements.time.value,
+        endTime: form.elements.endTime.value,
         location: form.elements.location.value.trim(),
         type: form.elements.type.value,
         description: form.elements.description.value.trim(),
@@ -508,6 +692,21 @@ function handleEventFormSubmit(submitEvent) {
         form.elements.date,
         document.getElementById("date-error"),
         errors.date
+    );
+    setPlannerFieldError(
+        form.elements.endDate,
+        document.getElementById("end-date-error"),
+        errors.endDate
+    );
+    setPlannerFieldError(
+        form.elements.time,
+        document.getElementById("time-error"),
+        errors.time
+    );
+    setPlannerFieldError(
+        form.elements.endTime,
+        document.getElementById("end-time-error"),
+        errors.endTime
     );
 
     if (Object.keys(errors).length > 0) {
@@ -560,6 +759,12 @@ function loadSavedPlannerEvents() {
 document
     .getElementById("event-form")
     .addEventListener("submit", handleEventFormSubmit);
+document.getElementById("event-date").addEventListener("change", (changeEvent) => {
+    const endDate = document.getElementById("event-end-date");
+    if (!endDate.value || endDate.value < changeEvent.currentTarget.value) {
+        endDate.value = changeEvent.currentTarget.value;
+    }
+});
 calendarGrid.addEventListener("click", (clickEvent) => {
     const eventButton = clickEvent.target.closest(".calendar-event");
     if (!eventButton || !calendarGrid.contains(eventButton)) {

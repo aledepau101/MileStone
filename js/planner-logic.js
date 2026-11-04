@@ -58,6 +58,11 @@ function parseEventTime(time) {
     };
 }
 
+function getEventEndDate(event) {
+    // Older saved events do not have an end date and remain single-day events.
+    return event?.endDate || event?.date;
+}
+
 function validateEvent(event = {}) {
     const errors = {};
 
@@ -70,8 +75,37 @@ function validateEvent(event = {}) {
         errors.title = "Event title is required.";
     }
 
-    if (!isValidDateKey(event?.date)) {
+    const hasValidStartDate = isValidDateKey(event?.date);
+    if (!hasValidStartDate) {
         errors.date = "Enter a valid date.";
+    }
+
+    const endDate = getEventEndDate(event);
+    const hasValidEndDate = isValidDateKey(endDate);
+    if (!hasValidEndDate) {
+        errors.endDate = "Enter a valid end date.";
+    } else if (hasValidStartDate && endDate < event.date) {
+        errors.endDate = "End date must be on or after the start date.";
+    }
+
+    const startTime = event?.time ? parseEventTime(event.time) : null;
+    const endTime = event?.endTime ? parseEventTime(event.endTime) : null;
+    if (event?.time && !startTime) {
+        errors.time = "Enter a valid start time.";
+    }
+    if (event?.endTime && !endTime) {
+        errors.endTime = "Enter a valid end time.";
+    } else if (endTime && !startTime) {
+        errors.endTime = "Enter a start time before the end time.";
+    } else if (
+        startTime &&
+        endTime &&
+        hasValidStartDate &&
+        hasValidEndDate &&
+        event.date === endDate &&
+        endTime.hour * 60 + endTime.minute <= startTime.hour * 60 + startTime.minute
+    ) {
+        errors.endTime = "End time must be after the start time.";
     }
 
     return errors;
@@ -116,6 +150,7 @@ function savePlannerEvents(events, storage = globalThis.localStorage) {
 
 const plannerLogicExports = {
     getDateKey,
+    getEventEndDate,
     isValidDateKey,
     loadPlannerEvents,
     parseEventTime,

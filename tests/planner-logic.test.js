@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {
   getDateKey,
+  getEventEndDate,
   isValidDateKey,
   loadPlannerEvents,
   parseEventTime,
@@ -47,6 +48,37 @@ test("validates event title and date", () => {
     title: "Event title is required.",
     date: "Enter a valid date.",
   });
+});
+
+test("validates date and time ranges while preserving legacy single-date events", () => {
+  const event = {
+    title: "Conference",
+    date: "2026-11-03",
+    endDate: "2026-11-06",
+    time: "09:30",
+    endTime: "15:00",
+  };
+  assert.deepEqual(validateEvent(event), {});
+  assert.equal(getEventEndDate(event), "2026-11-06");
+  assert.equal(getEventEndDate({ date: "2026-11-03" }), "2026-11-03");
+  assert.deepEqual(validateEvent({
+    ...event,
+    endDate: "2026-11-02",
+  }), {
+    endDate: "End date must be on or after the start date.",
+  });
+  assert.deepEqual(validateEvent({
+    ...event,
+    endDate: "2026-11-03",
+    endTime: "09:30",
+  }), {
+    endTime: "End time must be after the start time.",
+  });
+  assert.deepEqual(validateEvent({
+    title: "Legacy event",
+    date: "2026-11-03",
+    time: "09:30",
+  }), {});
 });
 
 test("loads no events when storage is empty", () => {
