@@ -29,7 +29,7 @@ Sign up and login
 4. Invalid login: Try a wrong password or an unregistered email. Confirm the app rejects the attempt and shows an error.
 5. Validation: Try submitting the signup form with empty fields. Confirm it does not create an account.
 
-
+Schedule Planner
 1. After logging in, open the schedule planner page.
 2. Create: Add a new event with a title, date, and time. Confirm it appears on the Month tab on the correct day.
 3. Week view: Switch to the Week tab and confirm the same event appears on the correct day and time slot.
