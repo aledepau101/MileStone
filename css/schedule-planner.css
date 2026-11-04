@@ -438,3 +438,10 @@
     background: #fff0de;
     color: #85451a;
 }
+
+/* Allow the 24-hour Week View to scroll vertically. */
+#calendar-grid.week-view {
+    max-height: 500px;
+    overflow-y: auto;
+    align-content: start;
+}

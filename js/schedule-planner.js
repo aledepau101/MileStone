@@ -161,8 +161,8 @@ function renderWeek() {
         calendarGrid.appendChild(cell);
     }
 
-    // Hourly rows from 8 AM through 8 PM.
-    for (let hour = 8; hour <= 20; hour++) {
+    // Hourly rows from 12 AM through 11 PM.
+    for (let hour = 0; hour <= 24; hour++) {
         const timeLabel = document.createElement("div");
         timeLabel.className = "week-time-label";
 
