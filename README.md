@@ -3,7 +3,7 @@
 A web app that helps graduate students plan and track their thesis milestones.
 
 ## Tech stack
-TBD. Data is stored in the browser with localStorage.
+Data is stored in the browser with localStorage.
 
 ## Install and run
 1. Clone the repo.
@@ -11,10 +11,10 @@ TBD. Data is stored in the browser with localStorage.
 3. Right-click index.html and choose "Open with Live Server".
 
 ## Implemented feature
-(Sprint 1: Sign up and log in, Schedule Planner)
+Allowed user to create events that show up on both month and week tabs of the calendar, events can be edited or deleted.
 
 ## How to test
-TBD
+Live Server extension on VS code
 
 ## AI usage disclosure
-TBD
+Copilot with VS code
