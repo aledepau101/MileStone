@@ -37,3 +37,7 @@ Schedule Planner
 5. Delete: Delete the event. Confirm it disappears from both views.
 6. Create an event, then refresh the page. Confirm the event is still there.
 
+
+## AI Usage Disclosure
+We used GitHub Copilot (agent mode) and the Figma MCP Server to build the Sprint 1 features. The Figma MCP Server gave Copilot the layout, colors, and components from our Figma frames, and Copilot generated first drafts of the HTML, CSS, JavaScript, and tests from our issues' acceptance criteria. We reviewed all generated code, tested each acceptance criterion by hand and with automated tests (node --test), and fixed the problems we found, including fixing the week view placing early events in the 8 AM row.
+
