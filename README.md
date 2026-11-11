@@ -1,24 +1,61 @@
 # MileStone
 
-MileStone is a web app that helps graduate students plan and track their thesis milestones. It is built with HTML, CSS, and JavaScript and runs entirely in the browser. Data is stored with localStorage.
+MileStone is a web app that helps graduate students plan and track their thesis milestones. The frontend is built with HTML, CSS, and JavaScript. An Express backend and Prisma persistence layer are being added; the existing sign-up, login, and calendar page scripts continue to use localStorage until their API routes are integrated.
 
-## Installing Dependencies
-There are no packages to install. You need:
+## Requirements
 
 - A modern web browser (Chrome, Edge, Firefox, or Safari)
-- [Visual Studio Code](https://code.visualstudio.com/) with the **Live Server** extension (search "Live Server" by Ritwick Dey in the Extensions panel)
 - [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/) 18 or newer (only needed to run the automated tests)
+- [Node.js](https://nodejs.org/) 18.18 or newer and npm
+- A MySQL-compatible TiDB Cloud database with TLS enabled
+
+## Installing Dependencies
+
+Install the Node dependencies from the repository root:
+```sh
+npm install
+```
+
+## Backend setup
+
+1. Copy `.env.example` to `.env` and replace its placeholder values with your TiDB Cloud connection details. Keep `?sslaccept=strict` in `DATABASE_URL`.
+2. Generate the Prisma client and apply the checked-in migrations:
+   ```sh
+   npm run postinstall
+   npm run db:migrate
+   ```
+3. Optionally add the development demo user and two sample events:
+   ```sh
+   npm run db:seed
+   ```
+   The seed password is defined in `prisma/seed.js` and is for development only.
+4. Start the server:
+   ```sh
+   npm run dev
+   ```
+   Open `http://localhost:3000`; `/` redirects to the login page. `GET /api/health` checks the database connection and reports the user count.
+
+The server serves only `/css`, `/js`, and `login.html`, `signup.html`, `dashboard.html`, and `schedule-planner.html`; it does not expose the repository root as static content.
+
+## Database migrations
+
+The initial migration is generated from `prisma/schema.prisma` without a shadow database:
+```sh
+npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script --output prisma/migrations/0_init/migration.sql
+```
+
+Apply migrations with `npm run db:migrate` (`prisma migrate deploy`). Do not use `prisma migrate dev` with the TiDB Cloud host.
 
 ## Running the Application Locally
+
 1. Clone the repo and open it in VS Code:
    ```
    git clone https://github.com/aledepau101/MileStone.git
    cd MileStone
    code .
    ```
-2. Right-click `login.html` and choose **Open with Live Server**.
-3. The app opens in your browser at an address like `http://127.0.0.1:5500`. Use the same address each time, because localStorage is separate for each address.
+2. Complete the [backend setup](#backend-setup).
+3. Start the Express server with `npm run dev` and open `http://localhost:3000`.
 
 ## Implemented Features
 1. **Sign up and log in.** New users can create an account on the signup page and then log in. The signup form checks required fields, email format, an 8-character minimum password, matching passwords, and duplicate emails. Account information is stored in the browser's localStorage. After logging in, the user is taken to the dashboard. Authentication is simulated, and passwords are stored unencrypted, so don't use real passwords.
@@ -33,14 +70,14 @@ node --test
 ```
 
 **Sign up and log in (manual)**
-1. Start the app with Live Server and open `signup.html`.
+1. Start the app with `npm run dev` and open `http://localhost:3000/signup.html`.
 2. Sign up: enter a name, email, and password (8 or more characters) and submit. You'll be taken to the dashboard.
 3. Log in: log in with the same credentials and confirm you reach the dashboard.
 4. Invalid login: try a wrong password or an unregistered email. Confirm the app rejects the attempt and shows an error.
 5. Validation: submit the signup form with empty fields, a short password, or mismatched passwords. Confirm it shows errors and does not create an account.
 
 **Schedule Planner (manual)**
-1. After logging in, open the Schedule Planner page.
+1. After logging in, open the Schedule Planner page at `http://localhost:3000/schedule-planner.html`.
 2. Create: add a new event with a title, date, and time. Confirm it appears on the Month tab on the correct day.
 3. Week view: switch to the Week tab and confirm the same event appears on the correct day and time slot.
 4. Edit: open the event, change its title or date, and save. Confirm the update shows in both Month and Week views.
