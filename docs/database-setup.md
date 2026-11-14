@@ -105,7 +105,8 @@ Each member runs the setup above and records one database operation they perform
 | Member | Connection test performed | Result | Date |
 |---|---|---|---|
 | Alex | Ran migration, seeded data, checked `/api/health` | Pass: migration applied, demo user seeded, /api/health returned {"status":"ok","userCount":1} | 11/11/26 |
-| Zack | | | |
+| Zack | Connected to TiDB Cloud using Prisma and tested /api/health | Pass: Prisma retrieved database models and 
+ /api/health returned {"status":"ok","userCount":1} | 11/13/2026 |
 | Lasya | | | |
 | Swastik | | | |
 
