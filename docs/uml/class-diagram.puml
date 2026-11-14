@@ -1,0 +1,42 @@
+@startuml class-diagram
+title MileStone - UML Class Diagram
+
+class User {
+    +id: String <<PK>>
+    +name: String
+    +email: String <<Unique>>
+    +passwordHash: String
+    +role: String = "student"
+    +createdAt: DateTime
+}
+
+class CalendarEvent {
+    +id: String <<PK>>
+    +userId: String <<FK>>
+    +title: String
+    +date: String
+    +endDate: String?
+    +time: String?
+    +endTime: String?
+    +location: String?
+    +type: String?
+    +description: String?
+    +createdAt: DateTime
+    +updatedAt: DateTime
+}
+
+User "1" -- "0..*" CalendarEvent: owns
+
+note right of User
+    id: UUID primary key
+    email: unique
+    role defaults to "student"
+end note
+
+note right of CalendarEvent
+    userId references User.id
+    On user deletion: CASCADE
+    Composite index: (userId, date)
+end note
+
+@enduml
