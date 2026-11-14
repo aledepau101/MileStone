@@ -1,5 +1,21 @@
 .DS_Store
 
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Private keys
+*.pem
+*.key
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
 # Database credentials
 .env
 .env.*
