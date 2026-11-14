@@ -7,6 +7,14 @@ participant "Express Backend" as Express
 participant "Prisma ORM" as Prisma
 database "MySQL Database" as MySQL
 
+note over Browser, MySQL
+    Implemented Sprint 2 functionality.
+    Shows the GET /api/health endpoint.
+    Verified against the Express backend.
+    This is a technical health check,
+    not a Schedule Planner user story.
+end note
+
 User -> Browser : Request database health check
 Browser -> Express : GET /api/health
 
@@ -31,7 +39,7 @@ alt Database operations succeed
     Browser --> User : Display health check result
 else Database operation fails
     Express --> Browser : HTTP 500 {status: "error", error: "..."}
-    browser --> User : Display error
+    Browser --> User : Display error
 end
 
 deactivate Express
