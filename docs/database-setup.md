@@ -98,7 +98,11 @@ This creates a demo user (`demo@milestone.example`) and sample events. It uses u
 
 The data model and initial backend files were proposed and generated with GitHub Copilot Agent Mode from our requirements. The team reviewed everything, applied the commands by hand, and verified the result against the real database. The review notes, including what we corrected, are in `docs/ai-design-review.md`.
 
-## 9. Team database verification
+## 9. Credential Security 
+<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/4e54800b-a73a-44cf-8631-7846ba8b66f4" />
+
+
+## 10. Team database verification
 
 Each member runs the setup above and records one database operation they performed. Do not include credentials.
 
