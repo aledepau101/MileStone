@@ -98,9 +98,24 @@ This creates a demo user (`demo@milestone.example`) and sample events. It uses u
 
 The data model and initial backend files were proposed and generated with GitHub Copilot Agent Mode from our requirements. The team reviewed everything, applied the commands by hand, and verified the result against the real database. The review notes, including what we corrected, are in `docs/ai-design-review.md`.
 
-## 9. Credential Security 
-<img width="1917" height="1077" alt="image" src="https://github.com/user-attachments/assets/4e54800b-a73a-44cf-8631-7846ba8b66f4" />
+## 9. Credential Security
 
+Evidence that `.env` is ignored and has never been committed (run on `main`):
+
+```
+> git check-ignore -v .env
+.gitignore:7:.env       .env
+
+> git ls-files .env
+(no output: .env is not tracked)
+
+> git log --all --oneline -- .env
+(no output: .env has never been committed)
+```
+
+`.env.example` contains placeholders only.
+
+<img width="900" alt="Terminal output showing .env is ignored and not tracked" src="https://github.com/user-attachments/assets/4e54800b-a73a-44cf-8631-7846ba8b66f4" />
 
 ## 10. Team database verification
 
@@ -109,8 +124,6 @@ Each member runs the setup above and records one database operation they perform
 | Member | Connection test performed | Result | Date |
 |---|---|---|---|
 | Alex | Ran migration, seeded data, checked `/api/health` | Pass: migration applied, demo user seeded, /api/health returned {"status":"ok","userCount":1} | 11/11/26 |
-| Zack | | | |
+| Zack | Connected to TiDB Cloud using Prisma and tested /api/health | Pass: Prisma retrieved database models and /api/health returned {"status":"ok","userCount":1} | 11/13/2026 |
 | Lasya | Ran `npx prisma migrate status`, checked `/api/health`, ran events API tests against the database | Pass: "Database schema is up to date!", /api/health returned {"status":"ok",...}, node --test passed (create/read/update/delete, validation, ownership) | 11/15/26 |
-| Swastik |Signed up a test user, logged in, added a calendar event, checked `/api/health` | Pass: user inserted with hashed password, login worked, event saved, /api/health returned {"status":"ok","userCount":N} | 11/14/26|
-
-For example, a test could be "pulled `main`, created a `.env`, started the app, and `/api/health` returned `ok`", followed later by "signed up a new account and saw it in the database".
+| Swastik |Signed up a test user, logged in, added a calendar event, checked `/api/health` | Pass: user inserted with hashed password, login worked, event saved, /api/health returned {"status":"ok","userCount":N} | 11/14/26 |
