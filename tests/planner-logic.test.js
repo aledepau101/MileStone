@@ -10,18 +10,6 @@ const {
   validateEvent,
 } = require("../js/planner-logic.js");
 
-function createStorage(initialValue = null) {
-  return {
-    value: initialValue,
-    getItem() {
-      return this.value;
-    },
-    setItem(key, value) {
-      this.value = value;
-    },
-  };
-}
-
 test("builds date keys from local date components", () => {
   assert.equal(getDateKey(new Date(2026, 10, 3)), "2026-11-03");
 });

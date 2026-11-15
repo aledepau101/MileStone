@@ -27,10 +27,15 @@ async function eventsApi(path = "", options = {}) {
         ...options,
     });
     if (response.status === 401) {
-    try { localStorage.removeItem("currentUser"); } catch {}
-    window.location.assign("login.html");
-    throw new Error("Please log in.");
-}
+        try {
+            localStorage.removeItem("currentUser");
+        } catch {
+            // localStorage unavailable; nothing to clear.
+        }
+        window.location.assign("login.html");
+        throw new Error("Please log in.");
+    }    
+
     if (response.status === 204) return null;
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {

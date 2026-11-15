@@ -13,7 +13,9 @@
     }
     try {
       localStorage.removeItem("currentUser");
-    } catch {}
+    } catch {
+      // localStorage unavailable; nothing to clear.
+    }
     window.location.assign("login.html");
   }
 
