@@ -108,6 +108,6 @@ Each member runs the setup above and records one database operation they perform
 | Zack | Connected to TiDB Cloud using Prisma and tested /api/health | Pass: Prisma retrieved database models and 
  /api/health returned {"status":"ok","userCount":1} | 11/13/2026 |
 | Lasya | | | |
-| Swastik | | | |
+| Swastik |Signed up a test user, logged in, added a calendar event, checked `/api/health` | Pass: user inserted with hashed password, login worked, event saved, /api/health returned {"status":"ok","userCount":N} | 11/14/26|
 
 For example, a test could be "pulled `main`, created a `.env`, started the app, and `/api/health` returned `ok`", followed later by "signed up a new account and saw it in the database".
