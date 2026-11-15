@@ -15,9 +15,10 @@ participant "Prisma ORM" as Prisma
 database "MySQL / TiDB" as DB
 
 note over UI, DB
-    Proposed Sprint 2 database integration.
-    Actual API routes must be verified.
-    Current planner uses localStorage.
+    Sprint 2 calendar event integration (PR #19).
+    API routes verified against pull request.
+    Pending merge into main.
+    Authentication currently uses a temporary x-user-id header.
 end note
 
 Student -> UI: Enter event or deadline details
@@ -28,7 +29,7 @@ UI -> UI: Validate event information
 alt Valid event
     UI -> API: POST /api/events (event details)
 
-    API -> API: Identify logged-in user
+    API -> API: Identify user (temporary x-user-id header)
     API -> API: Validate event data
 
     API -> Prisma: calendarEvent.create({ data:, eventData })
