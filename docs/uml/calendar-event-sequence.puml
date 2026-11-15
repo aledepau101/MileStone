@@ -1,4 +1,4 @@
-@startuml CalendarEventSequence
+@startuml 
 title MileStone - Add Calendar Event (User Story #2)
 legend top
     <b>User Story - GitHub Issue #2</b>
@@ -16,9 +16,9 @@ database "MySQL / TiDB" as DB
 
 note over UI, DB
     Sprint 2 calendar event integration (PR #19).
-    API routes verified against pull request.
-    Pending merge into main.
-    Authentication currently uses a temporary x-user-id header.
+    Authentication uses a sid session cookie.
+    sessionToUser resolves the session to a user.
+    requireAuth checks the resolved user.
 end note
 
 Student -> UI: Enter event or deadline details
@@ -29,9 +29,11 @@ UI -> UI: Validate event information
 alt Valid event
     UI -> API: POST /api/events (event details)
 
-    API -> API: Identify user (temporary x-user-id header)
+    API -> API: Read sid session cookie (sessionToUser)
+    API -> API: Resolve session to user (getUserId)
+    API -> API: Authorize request (requireAuth)
 
-    alt Missing x-user-id
+    alt Missing or invalid session
         API --> UI: HTTP 401 Unauthorized
         UI --> Student: Display authentication error
     else Valid user
