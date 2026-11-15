@@ -28,6 +28,8 @@ app.use("/js", express.static(path.join(projectRoot, "js"), {
   index: false,
 }));
 
+app.use(express.json()); //new
+app.use("/api/events", require("./src/routes/events")); //new
 app.get("/:page", (request, response, next) => {
   if (!publicPages.has(request.params.page)) {
     next();

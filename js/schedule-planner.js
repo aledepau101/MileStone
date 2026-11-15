@@ -19,6 +19,26 @@ let currentView = "month";
 let plannerEvents = [];
 let editingEventIndex = null;
 
+//new -- API 
+async function eventsApi(path = "", options = {}) {
+    const response = await fetch("/api/events" + path, {
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        ...options,
+    });
+    if (response.status === 401) {
+        throw new Error("Please log in.");
+    }
+    if (response.status === 204) return null;
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(
+            data.errors ? Object.values(data.errors).join(" ") : data.error || "Request failed."
+        );
+    }
+    return data;
+}
+
 // Convert JS Sunday-first numbering to Monday-first.
 function getMonday(date) {
     const monday = new Date(
@@ -634,28 +654,26 @@ function beginEventEdit() {
     form.elements.title.focus();
 }
 
-function deleteSelectedEvent() {
+async function deleteSelectedEvent() {
     const eventIndex = Number(
         document.getElementById("event-details-dialog").dataset.eventIndex
     );
     if (!Number.isInteger(eventIndex) || !plannerEvents[eventIndex]) {
         return;
     }
-
     if (!window.confirm("Delete this event? This cannot be undone.")) {
         return;
     }
 
-    const updatedEvents = plannerEvents.filter((_, index) => index !== eventIndex);
     try {
-        plannerLogic.savePlannerEvents(updatedEvents);
+        await eventsApi("/" + plannerEvents[eventIndex].id, { method: "DELETE" });
     } catch (error) {
         document.getElementById("event-dialog-error").textContent =
             error instanceof Error ? error.message : "Unable to delete the event.";
         return;
     }
 
-    plannerEvents = updatedEvents;
+    plannerEvents = plannerEvents.filter((_, index) => index !== eventIndex);
     if (editingEventIndex === eventIndex) {
         resetEventForm();
     } else if (editingEventIndex !== null && editingEventIndex > eventIndex) {
@@ -666,7 +684,7 @@ function deleteSelectedEvent() {
     renderCalendar();
 }
 
-function handleEventFormSubmit(submitEvent) {
+async function handleEventFormSubmit(submitEvent) {
     submitEvent.preventDefault();
     clearPlannerFormErrors();
 
@@ -723,36 +741,36 @@ function handleEventFormSubmit(submitEvent) {
         return;
     }
 
-    const updatedEvents = editingEventIndex === null
-        ? plannerEvents.concat(event)
-        : plannerEvents.map((savedEvent, index) =>
-            index === editingEventIndex ? event : savedEvent
-        );
+        let saved;
     try {
-        plannerLogic.savePlannerEvents(updatedEvents);
+        saved = editingEventIndex === null
+            ? await eventsApi("", { method: "POST", body: JSON.stringify(event) })
+            : await eventsApi("/" + plannerEvents[editingEventIndex].id, {
+                method: "PUT",
+                body: JSON.stringify(event),
+            });
     } catch (error) {
         document.getElementById("event-error").textContent =
             error instanceof Error ? error.message : "Unable to save the event.";
         return;
     }
 
-    plannerEvents = updatedEvents;
+    plannerEvents = editingEventIndex === null
+        ? plannerEvents.concat(saved)
+        : plannerEvents.map((e, i) => (i === editingEventIndex ? saved : e));
     const [year, month, day] = event.date.split("-").map(Number);
     currentDate = new Date(year, month - 1, day);
     resetEventForm();
     renderCalendar();
 }
 
-function loadSavedPlannerEvents() {
+async function loadSavedPlannerEvents() {
     try {
-        plannerEvents = plannerLogic.loadPlannerEvents().filter(
-            (event) => Object.keys(plannerLogic.validateEvent(event)).length === 0
-        );
+        plannerEvents = await eventsApi();
     } catch (error) {
         document.getElementById("event-error").textContent =
             error instanceof Error ? error.message : "Unable to load saved events.";
     }
-
     renderCalendar();
 }
 
