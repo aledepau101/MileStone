@@ -4,17 +4,21 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const app = require("../server");
 const prisma = require("../src/db");
+const { createSession } = require("../src/sessions");
 
 let server;
 let base;
 let userA;
 let userB;
 
-// TEMPORARY auth: sends x-user-id. Update when the real login lands.
-const asUser = (user) => ({
-  "Content-Type": "application/json",
-  "x-user-id": user.id,
-});
+// Logs the user in by creating a real session, then sends it as the sid cookie.
+const asUser = (user) => {
+  user.sid ??= createSession(user.id);
+  return {
+    "Content-Type": "application/json",
+    Cookie: `sid=${user.sid}`,
+  };
+};
 
 const send = (path, user, method = "GET", body) =>
   fetch(base + path, {
