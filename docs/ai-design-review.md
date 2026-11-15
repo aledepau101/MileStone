@@ -19,6 +19,17 @@ Copilot proposed two models, `User` and `CalendarEvent`, with a one-to-many rela
 3. **Database name.** TiDB's connect screen defaulted to the `sys` database, which is a built-in system schema. We created a dedicated `milestone` database instead.
 4. **Static file serving.** We required the server to serve only `/css`, `/js`, and the four HTML pages. Serving the whole project folder would expose `.env` and `package.json`. We verified that requesting `/.env` in the browser fails.
 5. **Health check response.** Our early documentation assumed the health route returned `"database":"connected"` and a `users` field. The generated server actually returns `{"status":"ok","userCount":N}`. We tested the real route and corrected our documentation and pull request description to match.
+6. **How the calendar event diagram identifies the user.** The first
+   sequence diagram showed the API reading a temporary `x-user-id`
+   header, with a "pending merge" note. After the login PR, the code
+   uses a session cookie (`sid`) and the `sessionToUser` middleware
+   instead, and drops any `x-user-id` sent by the browser. We updated
+   the diagram to "sessionToUser reads the sid cookie and identifies
+   the user," renamed the failure branch to "No valid session,"
+   removed the "pending merge" note, and regenerated the SVG. We
+   checked it against `src/sessions.js` and
+   `src/middleware/sessionToUser.js`, and confirmed in the browser
+   that a faked `x-user-id` gets a 401.
 
 ## 3. Assumptions made by AI that we reviewed
 
@@ -34,3 +45,5 @@ Copilot proposed two models, `User` and `CalendarEvent`, with a one-to-many rela
 - Ran the seed script and confirmed the demo user's `passwordHash` is a bcrypt hash.
 - Started the server and confirmed `/api/health` returns `ok`.
 - Confirmed `.env` is ignored and not tracked by Git.
+- Compared the calendar event sequence diagram to the merged auth code
+  and tests, and confirmed login sets the `sid` cookie.
