@@ -1,15 +1,11 @@
 (() => {
-  const { validateLoginFields, authenticate, getAccounts } = globalThis;
+  const { validateLoginFields } = globalThis;
   const form = document.querySelector(".login-form");
   const submitButton = form?.querySelector(".submit-button");
   const statusMessage = form?.querySelector(".form-status");
 
-  if (
-    typeof validateLoginFields !== "function" ||
-    typeof authenticate !== "function" ||
-    typeof getAccounts !== "function"
-  ) {
-    throw new Error("Log in requires the validation, auth, and storage scripts to load first.");
+  if (typeof validateLoginFields !== "function") {
+    throw new Error("Log in requires the validation script to load first.");
   }
 
   if (!form || !submitButton || !statusMessage) {
@@ -87,28 +83,45 @@
     submitButton.textContent = "Logging in...";
 
     try {
-      const accounts = await getAccounts();
-      const session = authenticate(accounts, {
-        email: values.email,
-        password: values.password,
-        role: form.elements.role.value,
-      });
+      let response;
+      try {
+        response = await fetch("/api/auth/login", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: values.email.trim(),
+            password: values.password,
+            role: form.elements.role.value,
+          }),
+        });
+      } catch {
+        showStatus("Unable to reach the server. Is it running?");
+        return;
+      }
 
-      if (!session) {
-        showStatus("Incorrect email, password, or account type.");
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        if (data.errors) {
+          showFieldErrors(data.errors);
+        } else {
+          showStatus(data.error || "Unable to log in.");
+        }
         return;
       }
 
       try {
-        globalThis.localStorage.setItem("currentUser", JSON.stringify(session));
+        globalThis.localStorage.setItem(
+          "currentUser",
+          JSON.stringify({ id: data.id, name: data.name, email: data.email, role: data.role }),
+        );
       } catch {
         showStatus("You are logged in, but your session could not be saved. Please try again.");
         return;
       }
 
       window.location.assign("dashboard.html");
-    } catch (error) {
-      showStatus(error instanceof Error ? error.message : "Unable to log in.");
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = "Log in";
