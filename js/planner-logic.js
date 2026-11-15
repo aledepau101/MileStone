@@ -1,6 +1,6 @@
 "use strict";
 
-const PLANNER_EVENTS_STORAGE_KEY = "plannerEvents";
+//const PLANNER_EVENTS_STORAGE_KEY = "plannerEvents";
 
 function isValidDateKey(dateKey) {
     if (typeof dateKey !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
@@ -111,50 +111,13 @@ function validateEvent(event = {}) {
     return errors;
 }
 
-function loadPlannerEvents(storage = globalThis.localStorage) {
-    let serializedEvents;
-
-    try {
-        serializedEvents = storage.getItem(PLANNER_EVENTS_STORAGE_KEY);
-    } catch (error) {
-        throw new Error("Unable to read planner events from localStorage.", {
-            cause: error,
-        });
-    }
-
-    if (serializedEvents === null) {
-        return [];
-    }
-
-    try {
-        const events = JSON.parse(serializedEvents);
-        return Array.isArray(events) ? events : [];
-    } catch {
-        return [];
-    }
-}
-
-function savePlannerEvents(events, storage = globalThis.localStorage) {
-    if (!Array.isArray(events)) {
-        throw new TypeError("Planner events must be an array.");
-    }
-
-    try {
-        storage.setItem(PLANNER_EVENTS_STORAGE_KEY, JSON.stringify(events));
-    } catch (error) {
-        throw new Error("Unable to save planner events to localStorage.", {
-            cause: error,
-        });
-    }
-}
-
 const plannerLogicExports = {
     getDateKey,
     getEventEndDate,
     isValidDateKey,
-    loadPlannerEvents,
+    
     parseEventTime,
-    savePlannerEvents,
+    
     validateEvent,
 };
 
