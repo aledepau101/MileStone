@@ -106,7 +106,7 @@ Each member runs the setup above and records one database operation they perform
 |---|---|---|---|
 | Alex | Ran migration, seeded data, checked `/api/health` | Pass: migration applied, demo user seeded, /api/health returned {"status":"ok","userCount":1} | 11/11/26 |
 | Zack | | | |
-| Lasya | | | |
+| Lasya | Ran `npx prisma migrate status`, checked `/api/health`, ran events API tests against the database | Pass: "Database schema is up to date!", /api/health returned {"status":"ok",...}, node --test passed (create/read/update/delete, validation, ownership) | 11/15/26 |
 | Swastik |Signed up a test user, logged in, added a calendar event, checked `/api/health` | Pass: user inserted with hashed password, login worked, event saved, /api/health returned {"status":"ok","userCount":N} | 11/14/26|
 
 For example, a test could be "pulled `main`, created a `.env`, started the app, and `/api/health` returned `ok`", followed later by "signed up a new account and saw it in the database".
