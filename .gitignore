@@ -16,10 +16,3 @@ node_modules/
 *.db
 *.sqlite
 *.sqlite3
-# Database credentials
-.env
-.env.*
-!.env.example
-
-# Installed dependencies
-node_modules/

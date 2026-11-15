@@ -30,16 +30,27 @@ alt Valid event
     UI -> API: POST /api/events (event details)
 
     API -> API: Identify user (temporary x-user-id header)
-    API -> API: Validate event data
 
-    API -> Prisma: calendarEvent.create({ data:, eventData })
-    Prisma -> DB: INSERT CalendarEvent
-    DB --> Prisma: Event saved
-    Prisma --> API: Created event
+    alt Missing x-user-id
+        API --> UI: HTTP 401 Unauthorized
+        UI --> Student: Display authentication error
+    else Valid user
+        API -> API: Validate event data
 
-    API --> UI: HTTP 201 Created
-    UI -> UI: Refresh calendar
-    UI --> Student: Display saved event
+        alt Invalid event data
+            API --> UI: HTTP 400 Bad Request
+            UI --> Student: Display validation errors
+        else Valid event data
+            API -> Prisma: calendarEvent.create({ data: eventData })
+            Prisma -> DB: INSERT CalendarEvent
+            DB --> Prisma: Event saved
+            Prisma --> API: Created event
+
+            API --> UI: HTTP 201 Created
+            UI -> UI: Refresh calendar
+            UI --> Student: Display saved event
+        end
+    end
 
 else Invalid event
     UI --> Student: Display validation errors
