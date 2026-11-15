@@ -29,6 +29,8 @@ app.use("/js", express.static(path.join(projectRoot, "js"), {
 }));
 
 app.use(express.json()); //new
+app.use(require("./src/middleware/sessionToUser"));
+app.use("/api/auth", require("./src/routes/auth"));
 app.use("/api/events", require("./src/routes/events")); //new
 app.get("/:page", (request, response, next) => {
   if (!publicPages.has(request.params.page)) {

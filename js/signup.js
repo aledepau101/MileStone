@@ -1,11 +1,11 @@
 (() => {
-  const { validateSignupFields, createAccount } = globalThis;
+  const { validateSignupFields } = globalThis;
   const form = document.querySelector(".signup-form");
   const submitButton = form?.querySelector(".submit-button");
   const statusMessage = form?.querySelector(".form-status");
 
-  if (typeof validateSignupFields !== "function" || typeof createAccount !== "function") {
-    throw new Error("Sign-up requires the validation and storage scripts to load first.");
+  if (typeof validateSignupFields !== "function") {
+    throw new Error("Sign-up requires the validation script to load first.");
   }
 
   if (!form || !submitButton || !statusMessage) {
@@ -99,19 +99,37 @@
     submitButton.textContent = "Creating account...";
 
     try {
-      const accountResult = await createAccount({
-        name: values.fullName.trim(),
-        email: values.email.trim(),
-        password: values.password,
-        role: form.elements.role.value,
-      });
+      let response;
+      try {
+        response = await fetch("/api/auth/signup", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: values.fullName.trim(),
+            email: values.email.trim(),
+            password: values.password,
+            role: form.elements.role.value,
+          }),
+        });
+      } catch {
+        showStatus("Unable to reach the server. Is it running?");
+        return;
+      }
 
-      if (!accountResult.ok) {
-        if (accountResult.error === "This email is already registered.") {
-          showFieldErrors({ email: accountResult.error });
-          fields.email.input.focus();
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        if (data.errors) {
+          showFieldErrors(data.errors);
+          const firstField = Object.keys(fields).find((fieldName) => data.errors[fieldName]);
+          if (firstField) {
+            fields[firstField].input.focus();
+          } else {
+            showStatus(Object.values(data.errors).join(" "));
+          }
         } else {
-          showStatus(accountResult.error || "Unable to create your account.");
+          showStatus(data.error || "Unable to create your account.");
         }
         return;
       }
@@ -119,11 +137,7 @@
       try {
         globalThis.localStorage.setItem(
           "currentUser",
-          JSON.stringify({
-            name: values.fullName.trim(),
-            email: values.email.trim(),
-            role: form.elements.role.value,
-          }),
+          JSON.stringify({ id: data.id, name: data.name, email: data.email, role: data.role }),
         );
       } catch {
         showStatus("Your account was created, but your session could not be saved. Please try again.");
