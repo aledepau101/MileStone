@@ -15,6 +15,7 @@ model User {
   role          String         @default("student") @db.VarChar(30)
   createdAt     DateTime       @default(now()) @db.DateTime(3)
   calendarEvents CalendarEvent[]
+  thesisProject ThesisProject?
 }
 
 model CalendarEvent {
@@ -33,4 +34,26 @@ model CalendarEvent {
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, date])
+}
+
+model ThesisProject {
+  id            String      @id @default(uuid()) @db.VarChar(36)
+  userId        String      @unique @db.VarChar(36)
+  finalDeadline String      @db.VarChar(10)
+  createdAt     DateTime    @default(now()) @db.DateTime(3)
+  updatedAt     DateTime    @updatedAt @db.DateTime(3)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestones    Milestone[]
+}
+
+model Milestone {
+  id              String        @id @default(uuid()) @db.VarChar(36)
+  thesisProjectId String        @db.VarChar(36)
+  name            String        @db.VarChar(200)
+  targetDate      String        @db.VarChar(10)
+  createdAt       DateTime      @default(now()) @db.DateTime(3)
+  updatedAt       DateTime      @updatedAt @db.DateTime(3)
+  thesisProject   ThesisProject @relation(fields: [thesisProjectId], references: [id], onDelete: Cascade)
+
+  @@index([thesisProjectId, targetDate])
 }

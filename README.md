@@ -35,7 +35,7 @@ npm install
    ```
    Open `http://localhost:3000`; `/` redirects to the login page. `GET /api/health` checks the database connection and reports the user count.
 
-The server serves only `/css`, `/js`, and `login.html`, `signup.html`, `dashboard.html`, and `schedule-planner.html`; it does not expose the repository root as static content.
+The server serves only `/css`, `/js`, and `login.html`, `signup.html`, `dashboard.html`, `schedule-planner.html`, and `thesis-milestones.html`; it does not expose the repository root as static content.
 
 ## Database migrations
 
@@ -62,6 +62,8 @@ Apply migrations with `npm run db:migrate` (`prisma migrate deploy`). Do not use
 
 2. **Schedule Planner.** A logged-in user can create events that appear on both the Month and Week tabs of the calendar. Events can be edited or deleted, and changes show up in both views. Events are saved in localStorage, so they remain after a page refresh.
 
+3. **Thesis Milestones.** A logged-in user can set a thesis final deadline and add, edit, or delete milestones. Milestones are stored in MySQL and listed by target date. A milestone date cannot be later than the final deadline.
+
 ## Testing the Features
 
 **Automated tests** (sign up, login, and planner logic):
@@ -83,6 +85,12 @@ node --test
 4. Edit: open the event, change its title or date, and save. Confirm the update shows in both Month and Week views.
 5. Delete: delete the event. Confirm it disappears from both views.
 6. Persistence: create an event, then refresh the page. Confirm the event is still there.
+
+**Thesis Milestones (manual)**
+1. Open `http://localhost:3000/thesis-milestones.html` while logged in.
+2. Set a final deadline, then add milestones with names and target dates on or before that date.
+3. Confirm milestones appear in date order, can be edited and deleted, and remain after refreshing the page.
+4. Try adding a milestone without a name or with a target date after the final deadline. Confirm the page shows an inline error.
 
 ## AI Usage Disclosure
 We used GitHub Copilot (agent mode) and the Figma MCP Server to build the Sprint 1 features. The Figma MCP Server gave Copilot the layout, colors, and components from our Figma frames, and Copilot generated first drafts of the HTML, CSS, JavaScript, and tests from our issues' acceptance criteria. We reviewed all generated code, tested each acceptance criterion by hand and with automated tests (`node --test`), and fixed the problems we found, including a bug where the week view placed early-morning events in the 8 AM row.
