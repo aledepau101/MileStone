@@ -1,0 +1,396 @@
+.thesis-page,
+.thesis-page * {
+    box-sizing: border-box;
+}
+
+.thesis-main {
+    padding-bottom: 36px;
+}
+
+.thesis-title-row {
+    margin-bottom: 20px;
+}
+
+.thesis-title-row p {
+    margin-bottom: 0;
+}
+
+.thesis-content {
+    display: grid;
+    gap: 14px;
+}
+
+.deadline-banner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+    padding: 14px 18px;
+    border: 1px solid #d6e0da;
+    border-radius: 12px;
+    background: #e7f2ed;
+}
+
+.deadline-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 50%;
+    background: #d1e3d9;
+    color: #204f37;
+}
+
+.deadline-copy h2,
+.thesis-panel h2 {
+    margin: 0;
+    color: #075139;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.deadline-value {
+    margin: 2px 0 0;
+    color: #075139;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.deadline-hint {
+    margin: 3px 0 0;
+    color: #6b7a71;
+    font-size: 12px;
+}
+
+.deadline-controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.deadline-edit-button {
+    padding: 9px 16px;
+    border: 1px solid #6b9b80;
+    border-radius: 7px;
+    background: transparent;
+    color: #204f37;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.deadline-editor {
+    display: grid;
+    width: min(100%, 300px);
+    gap: 7px;
+}
+
+.deadline-editor[hidden] {
+    display: none;
+}
+
+.deadline-editor label,
+.thesis-field label,
+.milestone-edit-field label {
+    color: #14281e;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.deadline-editor input,
+.thesis-field input,
+.milestone-edit-field input {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 9px 10px;
+    border: 1px solid #d0dbd4;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #14281e;
+    font: inherit;
+}
+
+.deadline-editor input:focus,
+.thesis-field input:focus,
+.milestone-edit-field input:focus {
+    border-color: #789784;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgb(32 79 55 / 10%);
+}
+
+.deadline-editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.deadline-editor-actions button {
+    margin-top: 0;
+    padding: 8px 11px;
+}
+
+.thesis-panel {
+    min-width: 0;
+    padding: 17px 18px;
+}
+
+.panel-intro {
+    margin: 4px 0 14px;
+    color: #6b7a71;
+    font-size: 13px;
+}
+
+.milestone-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 14px;
+}
+
+.thesis-field {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.thesis-field label span {
+    color: #b42318;
+}
+
+.thesis-field input:disabled {
+    background: #f5f7f6;
+    color: #6b7a71;
+    cursor: not-allowed;
+}
+
+.milestone-form > .add-event-btn {
+    min-height: 40px;
+    margin: 0;
+    padding: 9px 17px;
+    white-space: nowrap;
+}
+
+.milestone-form > .add-event-btn:disabled {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+.deadline-required-hint {
+    margin: 0 0 12px;
+    color: #6b7a71;
+    font-size: 12px;
+}
+
+.thesis-field-error,
+.thesis-status {
+    margin: 0;
+    color: #b42318;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.thesis-field-error[hidden],
+.thesis-status[hidden],
+.deadline-required-hint[hidden],
+.milestone-empty[hidden] {
+    display: none;
+}
+
+.thesis-field input[aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.milestone-edit-field input[aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.milestones-panel {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.milestones-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.milestones-header p {
+    margin: 0;
+    color: #6b7a71;
+    font-size: 12px;
+}
+
+.milestone-list {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.milestone-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 9px 10px;
+    border: 1px solid #e4ebe6;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.milestone-row-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(125px, 190px);
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.milestone-name {
+    overflow-wrap: anywhere;
+    color: #075139;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.milestone-date {
+    color: #52635a;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.milestone-row-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.milestone-row-actions button,
+.milestone-edit-actions button {
+    min-width: 76px;
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 7px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.thesis-edit-button {
+    border: 1px solid #a8c8b5;
+    background: #ffffff;
+    color: #204f37;
+}
+
+.thesis-delete-button {
+    border: 1px solid #e2a39b;
+    background: #ffffff;
+    color: #b42318;
+}
+
+.milestone-empty {
+    margin: 14px 0 3px;
+    color: #6b7a71;
+    font-size: 13px;
+}
+
+.milestone-edit-form {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(150px, 200px) auto;
+    align-items: end;
+    gap: 12px;
+    width: 100%;
+}
+
+.milestone-edit-field {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.milestone-edit-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.milestone-edit-error {
+    grid-column: 1 / -1;
+}
+
+.thesis-page button:focus-visible,
+.thesis-page a:focus-visible {
+    outline: 2px solid #204f37;
+    outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+    .milestone-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .milestone-form > .add-event-btn {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .deadline-banner {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .deadline-controls {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+    }
+
+    .deadline-controls > button,
+    .deadline-editor {
+        width: 100%;
+    }
+
+    .milestone-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .milestone-row-actions {
+        justify-content: flex-start;
+    }
+
+    .milestone-edit-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .milestone-edit-error {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .milestone-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .milestone-form > .add-event-btn {
+        grid-column: auto;
+    }
+
+    .milestones-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .milestone-row-main {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+    }
+}
