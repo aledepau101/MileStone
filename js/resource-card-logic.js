@@ -21,7 +21,7 @@ function getResourceLinkPresentation(url) {
         return { href: url, isAvailable: true };
     }
 
-    return { href: null, isAvailable: false };
+    return { href: "#", isAvailable: false };
 }
 
 const resourceCardLogicExports = {

@@ -55,15 +55,11 @@ function createResourceCard(resource) {
     });
 
     const linkPresentation = resourceCardLogic.getResourceLinkPresentation(resource.url);
-    let resourceLink;
-
+    const resourceLink = document.createElement("a");
+    resourceLink.href = linkPresentation.href;
     if (linkPresentation.isAvailable) {
-        resourceLink = document.createElement("a");
-        resourceLink.href = linkPresentation.href;
         resourceLink.target = "_blank";
         resourceLink.rel = "noopener noreferrer";
-    } else {
-        resourceLink = document.createElement("span");
     }
 
     resourceLink.className = "resource-card__link";

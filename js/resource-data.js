@@ -34,7 +34,7 @@ const resources = [
         description: "Help students format citations and bibliographies in APA, MLA, or Chicago Style",
         icon: "file-document",
         tags: ["Formatting", "Citation help"],
-        url: null,
+        url: "https://library.charlotte.edu/research-write/get-research-help/research-help",
         featured: false,
     },
     {
@@ -43,7 +43,7 @@ const resources = [
         description: "Find information about research grants, thesis funding, scholarships, and financial assistance.",
         icon: "diamond",
         tags: ["Funding", "Scholarships"],
-        url: null,
+        url: "https://graduateschool.charlotte.edu/funding/funding-graduate-education",
         featured: false,
     },
     {
@@ -52,7 +52,7 @@ const resources = [
         description: "Discover thesis-writing workshops, research presentations, academic seminars, and graduate student events.",
         icon: "users",
         tags: ["Workshops", "Events"],
-        url: null,
+        url: "https://gradlife.charlotte.edu/professional-development",
         featured: false,
     },
 ];
