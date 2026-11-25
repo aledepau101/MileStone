@@ -10,6 +10,7 @@
         <script src="js/resource-card-logic.js" defer></script>
         <script src="js/resource-card.js" defer></script>
         <script src="js/resource-data.js" defer></script>
+        <script src="js/resource-search.js" defer></script>
         <script src="js/resource-pages.js" defer></script>
     </head>
     <body class="resource-page" data-resource-page="support">
@@ -65,7 +66,8 @@
                 <label class="resource-page__search">
                     <span class="resource-page__visually-hidden">Search campus resources</span>
                     <span class="resource-page__search-icon" aria-hidden="true"></span>
-                    <input type="search" placeholder="Search campus resources..." autocomplete="off">
+                    <input type="search" placeholder="Search campus resources..." autocomplete="off"
+                        data-resource-search>
                 </label>
 
                 <section class="resource-page__callout" aria-labelledby="resource-callout-title">
@@ -78,6 +80,8 @@
 
                 <section class="resource-page__section" aria-labelledby="recommended-heading">
                     <h2 id="recommended-heading">Recommended for your thesis</h2>
+                    <!-- Pending design confirmation: this no-results wording is not in the Figma frames. -->
+                    <div data-resource-status role="status" hidden>No resources found. Try a different search.</div>
                     <div class="resource-page__resource-grid" data-resource-list="featured"></div>
                 </section>
 

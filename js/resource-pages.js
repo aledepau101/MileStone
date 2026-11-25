@@ -19,11 +19,36 @@ function renderResourcePage() {
         throw new Error("The resource card renderer is unavailable.");
     }
 
-    const pageResources = pageType === "support"
-        ? resources.filter((resource) => resource.featured)
-        : resources;
+    if (pageType === "support") {
+        const searchInput = document.querySelector("[data-resource-search]");
+        const status = document.querySelector("[data-resource-status]");
+        const resourceSearch = globalThis.resourceSearch;
 
-    pageResources.forEach((resource) => {
+        if (!searchInput || !status) {
+            throw new Error("The resource search controls are missing.");
+        }
+        if (!resourceSearch || typeof resourceSearch.getResourceSearchResults !== "function") {
+            throw new Error("The resource search helper is unavailable.");
+        }
+
+        const renderResults = () => {
+            const result = resourceSearch.getResourceSearchResults(resources, searchInput.value);
+
+            list.replaceChildren();
+            result.resources.forEach((resource) => {
+                cardRenderer.renderResourceCard(resource, list);
+            });
+
+            status.hidden = !result.hasNoResults;
+            list.hidden = result.hasNoResults;
+        };
+
+        searchInput.addEventListener("input", renderResults);
+        renderResults();
+        return;
+    }
+
+    resources.forEach((resource) => {
         cardRenderer.renderResourceCard(resource, list);
     });
 }
