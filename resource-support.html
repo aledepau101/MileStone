@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Resource Support | MileStone</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/resource-card.css">
+        <link rel="stylesheet" href="css/resource-pages.css">
+        <script src="js/resource-card-logic.js" defer></script>
+        <script src="js/resource-card.js" defer></script>
+        <script src="js/resource-data.js" defer></script>
+        <script src="js/resource-pages.js" defer></script>
+    </head>
+    <body class="resource-page" data-resource-page="support">
+        <header class="resource-page__header">
+            <a class="resource-page__brand" href="dashboard.html">MileStone</a>
+            <div class="resource-page__header-actions">
+                <span class="resource-page__notification" role="img" aria-label="Notifications">&#128276;</span>
+                <span class="resource-page__profile" role="img" aria-label="User profile">&#9786;</span>
+            </div>
+        </header>
+
+        <div class="resource-page__layout">
+            <aside class="resource-page__sidebar">
+                <nav class="resource-page__nav" aria-label="Main navigation">
+                    <a class="resource-page__nav-link" href="dashboard.html">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#8962;</span>
+                        Dashboard
+                    </a>
+                    <a class="resource-page__nav-link" href="schedule-planner.html">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128197;</span>
+                        Schedule Planner
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128193;</span>
+                        Workspace
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#9638;</span>
+                        Progress
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#10003;</span>
+                        Plagiarism Checker
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#9633;</span>
+                        Advisor Feedback
+                    </a>
+                    <a class="resource-page__nav-link resource-page__nav-link--active"
+                        href="resource-support.html" aria-current="page">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128214;</span>
+                        Resource Support
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="resource-page__main">
+                <section class="resource-page__intro" aria-labelledby="resource-page-title">
+                    <h1 id="resource-page-title">Resource Support</h1>
+                    <p>Find campus services and tools to help you move your thesis forward.</p>
+                </section>
+
+                <label class="resource-page__search">
+                    <span class="resource-page__visually-hidden">Search campus resources</span>
+                    <span class="resource-page__search-icon" aria-hidden="true"></span>
+                    <input type="search" placeholder="Search campus resources..." autocomplete="off">
+                </label>
+
+                <section class="resource-page__callout" aria-labelledby="resource-callout-title">
+                    <h2 id="resource-callout-title">Need help with your thesis?</h2>
+                    <p>Explore campus services curated for graduate students.</p>
+                    <a class="resource-page__browse-all" href="all-resources.html">
+                        Browse all resources <span aria-hidden="true">→</span>
+                    </a>
+                </section>
+
+                <section class="resource-page__section" aria-labelledby="recommended-heading">
+                    <h2 id="recommended-heading">Recommended for your thesis</h2>
+                    <div class="resource-page__resource-grid" data-resource-list="featured"></div>
+                </section>
+
+                <section class="resource-page__section resource-page__quick-link-section"
+                    aria-labelledby="quick-links-heading">
+                    <h2 id="quick-links-heading">Quick links</h2>
+                    <!-- TODO: Replace "#" destinations after the team confirms the quick-link URLs. -->
+                    <div class="resource-page__quick-links">
+                        <a class="resource-page__quick-link" href="#">
+                            <img class="resource-page__quick-link-icon" src="js/resource-icons/quick-link-document.svg" alt="">
+                            <span class="resource-page__quick-link-copy">
+                                <strong>Citation &amp; reference guides</strong>
+                                <small>APA, MLA, Chicago and more</small>
+                            </span>
+                            <img class="resource-page__quick-link-arrow" src="js/resource-icons/quick-link-arrow.svg" alt="">
+                        </a>
+                        <a class="resource-page__quick-link" href="#">
+                            <img class="resource-page__quick-link-icon" src="js/resource-icons/lightbulb.svg" alt="">
+                            <span class="resource-page__quick-link-copy">
+                                <strong>Graduate writing workshops</strong>
+                                <small>Build your skills and confidence</small>
+                            </span>
+                            <img class="resource-page__quick-link-arrow" src="js/resource-icons/quick-link-arrow.svg" alt="">
+                        </a>
+                        <a class="resource-page__quick-link" href="#">
+                            <img class="resource-page__quick-link-icon" src="js/resource-icons/lightbulb.svg" alt="">
+                            <span class="resource-page__quick-link-copy">
+                                <strong>Thesis Wellness &amp; Counseling</strong>
+                                <small>Mental health support, stress management, and work-life balance for graduate students.</small>
+                            </span>
+                            <img class="resource-page__quick-link-arrow" src="js/resource-icons/quick-link-arrow.svg" alt="">
+                        </a>
+                        <a class="resource-page__quick-link" href="#">
+                            <img class="resource-page__quick-link-icon" src="js/resource-icons/lightbulb.svg" alt="">
+                            <span class="resource-page__quick-link-copy">
+                                <strong>Graduate Funding &amp; Grants</strong>
+                                <small>Find scholarships, research grants, and financial assistance for thesis projects.</small>
+                            </span>
+                            <img class="resource-page__quick-link-arrow" src="js/resource-icons/quick-link-arrow.svg" alt="">
+                        </a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>All Resources | MileStone</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/resource-card.css">
+        <link rel="stylesheet" href="css/resource-pages.css">
+        <script src="js/resource-card-logic.js" defer></script>
+        <script src="js/resource-card.js" defer></script>
+        <script src="js/resource-data.js" defer></script>
+        <script src="js/resource-pages.js" defer></script>
+    </head>
+    <body class="resource-page" data-resource-page="all">
+        <header class="resource-page__header">
+            <a class="resource-page__brand" href="dashboard.html">MileStone</a>
+            <div class="resource-page__header-actions">
+                <span class="resource-page__notification" role="img" aria-label="Notifications">&#128276;</span>
+                <span class="resource-page__profile" role="img" aria-label="User profile">&#9786;</span>
+            </div>
+        </header>
+
+        <div class="resource-page__layout">
+            <aside class="resource-page__sidebar">
+                <nav class="resource-page__nav" aria-label="Main navigation">
+                    <a class="resource-page__nav-link" href="dashboard.html">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#8962;</span>
+                        Dashboard
+                    </a>
+                    <a class="resource-page__nav-link" href="schedule-planner.html">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128197;</span>
+                        Schedule Planner
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128193;</span>
+                        Workspace
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#9638;</span>
+                        Progress
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#10003;</span>
+                        Plagiarism Checker
+                    </a>
+                    <a class="resource-page__nav-link" href="#">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#9633;</span>
+                        Advisor Feedback
+                    </a>
+                    <a class="resource-page__nav-link resource-page__nav-link--active"
+                        href="resource-support.html" aria-current="page">
+                        <span class="resource-page__nav-icon" aria-hidden="true">&#128214;</span>
+                        Resource Support
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="resource-page__main resource-page__main--all">
+                <section class="resource-page__intro" aria-labelledby="resource-page-title">
+                    <h1 id="resource-page-title">Resource Support</h1>
+                    <p>Find campus services and tools to help you move your thesis forward.</p>
+                </section>
+
+                <a class="resource-page__return" href="resource-support.html">Return Back</a>
+
+                <section class="resource-page__section resource-page__all-section"
+                    aria-labelledby="all-resources-heading">
+                    <h2 id="all-resources-heading">All Resources</h2>
+                    <div class="resource-page__resource-grid" data-resource-list="all"></div>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>

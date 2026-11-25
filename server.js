@@ -13,6 +13,8 @@ const publicPages = new Set([
   "signup.html",
   "dashboard.html",
   "schedule-planner.html",
+  "resource-support.html",
+  "all-resources.html",
 ]);
 
 app.get("/", (_request, response) => {
