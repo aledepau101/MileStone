@@ -15,6 +15,8 @@ const publicPages = new Set([
   "schedule-planner.html",
   "resource-support.html",
   "all-resources.html",
+  "thesis-milestones.html",
+
 ]);
 
 app.get("/", (_request, response) => {
@@ -30,6 +32,12 @@ app.use("/js", express.static(path.join(projectRoot, "js"), {
   index: false,
 }));
 
+app.use(express.json()); //new
+app.use(require("./src/middleware/sessionToUser"));
+app.use("/api/auth", require("./src/routes/auth"));
+app.use("/api/events", require("./src/routes/events")); //new
+app.use("/api/thesis", require("./src/routes/thesis"));
+app.use("/api/milestones", require("./src/routes/milestones"));
 app.get("/:page", (request, response, next) => {
   if (!publicPages.has(request.params.page)) {
     next();

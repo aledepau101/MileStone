@@ -4,23 +4,11 @@ const {
   getDateKey,
   getEventEndDate,
   isValidDateKey,
-  loadPlannerEvents,
+  
   parseEventTime,
-  savePlannerEvents,
+ 
   validateEvent,
 } = require("../js/planner-logic.js");
-
-function createStorage(initialValue = null) {
-  return {
-    value: initialValue,
-    getItem() {
-      return this.value;
-    },
-    setItem(key, value) {
-      this.value = value;
-    },
-  };
-}
 
 test("builds date keys from local date components", () => {
   assert.equal(getDateKey(new Date(2026, 10, 3)), "2026-11-03");
@@ -82,24 +70,3 @@ test("validates date and time ranges while preserving legacy single-date events"
   }), {});
 });
 
-test("loads no events when storage is empty", () => {
-  assert.deepEqual(loadPlannerEvents(createStorage()), []);
-});
-
-test("falls back to an empty list for invalid JSON or a non-array value", () => {
-  assert.deepEqual(loadPlannerEvents(createStorage("{")), []);
-  assert.deepEqual(loadPlannerEvents(createStorage(JSON.stringify({ title: "Event" }))), []);
-});
-
-test("saves and reloads events", () => {
-  const storage = createStorage();
-  const events = [{ title: "Exam", date: "2026-11-03", type: "deadline" }];
-
-  savePlannerEvents(events, storage);
-
-  assert.deepEqual(loadPlannerEvents(storage), events);
-});
-
-test("rejects non-array event data when saving", () => {
-  assert.throws(() => savePlannerEvents({}, createStorage()), TypeError);
-});

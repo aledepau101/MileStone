@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#204f37">
+        <title>Thesis Milestones | MileStone</title>
+
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/schedule-planner.css">
+        <link rel="stylesheet" href="css/thesis-milestones.css">
+        <script src="js/thesis-milestones.js" defer></script>
+        <script src="js/logout.js" defer></script>
+    </head>
+    <body class="planner-page thesis-page">
+        <header class="planner-header">
+            <a href="dashboard.html" class="planner-brand">MileStone</a>
+            <div class="planner-header-actions">
+                <span class="planner-notification" role="img" aria-label="Notifications">
+                    <svg width="22" height="22" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
+                </span>
+                <span class="planner-profile" role="button" tabindex="0"
+                    aria-label="Log out" title="Log out">&#9786;</span>
+            </div>
+        </header>
+
+        <div class="planner-layout">
+            <aside class="planner-sidebar">
+                <nav aria-label="Main navigation">
+                    <a href="dashboard.html">
+                        <span class="nav-icon" aria-hidden="true">&#8962;</span>
+                        Dashboard
+                    </a>
+                    <a href="schedule-planner.html">
+                        <span class="nav-icon" aria-hidden="true">&#128197;</span>
+                        Schedule Planner
+                    </a>
+                    <a href="thesis-milestones.html" class="active" aria-current="page">
+                        <span class="nav-icon" aria-hidden="true">&#10003;</span>
+                        Thesis Milestones
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="planner-main thesis-main">
+                <div class="planner-title-row thesis-title-row">
+                    <div>
+                        <h1>Thesis Milestones</h1>
+                        <p>Break your thesis into milestones with target dates so the project feels like manageable steps.</p>
+                    </div>
+                </div>
+
+                <p id="page-error" class="thesis-status" role="alert" hidden></p>
+
+                <div class="thesis-content">
+                    <section class="deadline-banner" aria-labelledby="deadline-heading">
+                        <span class="deadline-icon" aria-hidden="true">
+                            <svg width="28" height="28" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="3" y="5" width="18" height="16" rx="2"/>
+                                <path d="M16 3v4M8 3v4M3 10h18"/>
+                                <path d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/>
+                            </svg>
+                        </span>
+                        <div class="deadline-copy">
+                            <h2 id="deadline-heading">Thesis Final Deadline</h2>
+                            <p id="deadline-value" class="deadline-value" aria-live="polite">Loading...</p>
+                            <p id="deadline-hint" class="deadline-hint">All milestones must be set before or on this date.</p>
+                        </div>
+                        <div class="deadline-controls">
+                            <button id="deadline-edit-button" type="button" class="deadline-edit-button" disabled>
+                                Edit Deadline
+                            </button>
+                            <form id="deadline-form" class="deadline-editor" hidden novalidate>
+                                <label for="final-deadline-input">Final deadline</label>
+                                <input id="final-deadline-input" name="finalDeadline" type="date" required>
+                                <div id="deadline-error" class="thesis-field-error" role="alert" hidden></div>
+                                <div class="deadline-editor-actions">
+                                    <button type="button" id="deadline-cancel" class="cancel-edit-btn">Cancel</button>
+                                    <button type="submit" class="add-event-btn">Save Deadline</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+
+                    <section class="event-panel thesis-panel" aria-labelledby="milestone-form-heading">
+                        <h2 id="milestone-form-heading">Add a Milestone</h2>
+                        <p class="panel-intro">Choose a name and a target date for this step.</p>
+                        <p id="deadline-required-hint" class="deadline-required-hint" hidden>
+                            Set a final deadline before adding milestones.
+                        </p>
+                        <form id="milestone-form" class="milestone-form" novalidate>
+                            <div class="thesis-field">
+                                <label for="milestone-name">Milestone Name <span aria-hidden="true">*</span></label>
+                                <input id="milestone-name" name="name" type="text"
+                                    maxlength="200" placeholder="e.g. Literature Review" disabled
+                                    aria-describedby="milestone-name-error" required>
+                                <p id="milestone-name-error" class="thesis-field-error" role="alert" hidden></p>
+                            </div>
+                            <div class="thesis-field">
+                                <label for="milestone-date">Target Date <span aria-hidden="true">*</span></label>
+                                <input id="milestone-date" name="targetDate" type="date"
+                                    aria-describedby="milestone-date-error" disabled required>
+                                <p id="milestone-date-error" class="thesis-field-error" role="alert" hidden></p>
+                            </div>
+                            <button id="milestone-submit" type="submit" class="add-event-btn" disabled>
+                                <span aria-hidden="true">＋</span> Add Milestone
+                            </button>
+                        </form>
+                        <p id="milestone-form-error" class="thesis-status" role="alert" hidden></p>
+                    </section>
+
+                    <section class="calendar-panel thesis-panel milestones-panel" aria-labelledby="milestones-heading">
+                        <div class="milestones-header">
+                            <h2 id="milestones-heading">Your Milestones</h2>
+                            <p>Sorted by date (earliest first)</p>
+                        </div>
+                        <p id="milestone-list-error" class="thesis-status" role="alert" hidden></p>
+                        <p id="milestone-empty" class="milestone-empty" hidden>
+                            No milestones yet. Add your first milestone above.
+                        </p>
+                        <ul id="milestone-list" class="milestone-list" aria-live="polite"></ul>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>

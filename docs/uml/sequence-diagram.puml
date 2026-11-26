@@ -1,0 +1,47 @@
+@startuml sequence-diagram
+title MileStone - Database Health Check Sequence Diagram
+
+actor User
+participant "Browser" as Browser
+participant "Express Backend" as Express
+participant "Prisma ORM" as Prisma
+database "MySQL Database" as MySQL
+
+note over Browser, MySQL
+    Implemented Sprint 2 functionality.
+    Shows the GET /api/health endpoint.
+    Verified against the Express backend.
+    This is a technical health check,
+    not a Schedule Planner user story.
+end note
+
+User -> Browser : Request database health check
+Browser -> Express : GET /api/health
+
+activate Express
+
+Express -> Prisma : $queryRaw SELECT 1
+activate Prisma
+Prisma -> MySQL : Execute SELECT 1
+MySQL --> Prisma : Query result
+Prisma --> Express: Database connection verified
+deactivate Prisma
+
+Express -> Prisma : user.count()
+activate Prisma
+Prisma -> MySQL : Count User records
+MySQL --> Prisma : User count
+Prisma --> Express : Count result
+deactivate Prisma
+
+alt Database operations succeed
+    Express --> Browser : HTTP 200 {status: "ok", userCount}
+    Browser --> User : Display health check result
+else Database operation fails
+    Express --> Browser : HTTP 500 {status: "error", error: "..."}
+    Browser --> User : Display error
+end
+
+deactivate Express
+
+@enduml

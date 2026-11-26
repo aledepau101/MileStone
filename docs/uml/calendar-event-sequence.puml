@@ -1,0 +1,61 @@
+@startuml 
+title MileStone - Add Calendar Event (User Story #2)
+legend top
+    <b>User Story - GitHub Issue #2</b>
+
+    As a graduate student, I want to add deadlines and events
+    to a monthly or weekly calendar so that I can see what's
+    due and plan my thesis work around it.
+endlegend
+
+actor "Graduate Student" as Student
+participant "Schedule Planner UI" as UI
+participant "Express API" as API
+participant "Prisma ORM" as Prisma
+database "MySQL / TiDB" as DB
+
+note over UI, DB
+    Sprint 2 calendar event integration (PR #19).
+    Authentication uses a sid session cookie.
+    sessionToUser resolves the session to a user.
+    requireAuth checks the resolved user.
+end note
+
+Student -> UI: Enter event or deadline details
+Student -> UI: Click Add Event
+
+UI -> UI: Validate event information
+
+alt Valid event
+    UI -> API: POST /api/events (event details)
+
+    API -> API: Read sid session cookie (sessionToUser)
+    API -> API: Resolve session to user (getUserId)
+    API -> API: Authorize request (requireAuth)
+
+    alt Missing or invalid session
+        API --> UI: HTTP 401 Unauthorized
+        UI --> Student: Display authentication error
+    else Valid user
+        API -> API: Validate event data
+
+        alt Invalid event data
+            API --> UI: HTTP 400 Bad Request
+            UI --> Student: Display validation errors
+        else Valid event data
+            API -> Prisma: calendarEvent.create({ data: eventData })
+            Prisma -> DB: INSERT CalendarEvent
+            DB --> Prisma: Event saved
+            Prisma --> API: Created event
+
+            API --> UI: HTTP 201 Created
+            UI -> UI: Refresh calendar
+            UI --> Student: Display saved event
+        end
+    end
+
+else Invalid event
+    UI --> Student: Display validation errors
+end
+
+@enduml
