@@ -36,6 +36,17 @@ model CalendarEvent {
   @@index([userId, date])
 }
 
+model Resource {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  name        String   @db.VarChar(200)
+  description String   @db.Text
+  icon        String   @db.VarChar(50)
+  tags        Json
+  url         String?  @db.VarChar(2048)
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now()) @db.DateTime(3)
+}
+
 model ThesisProject {
   id            String      @id @default(uuid()) @db.VarChar(36)
   userId        String      @unique @db.VarChar(36)
