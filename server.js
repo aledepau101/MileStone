@@ -16,7 +16,6 @@ const publicPages = new Set([
   "resource-support.html",
   "all-resources.html",
   "thesis-milestones.html",
-
 ]);
 
 app.get("/", (_request, response) => {
