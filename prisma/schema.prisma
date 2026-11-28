@@ -54,6 +54,20 @@ model Milestone {
   createdAt       DateTime      @default(now()) @db.DateTime(3)
   updatedAt       DateTime      @updatedAt @db.DateTime(3)
   thesisProject   ThesisProject @relation(fields: [thesisProjectId], references: [id], onDelete: Cascade)
+  tasks           Task[]
 
   @@index([thesisProjectId, targetDate])
+}
+
+model Task {
+  id         String    @id @default(uuid()) @db.VarChar(36)
+  milestoneId String   @db.VarChar(36)
+  name       String    @db.VarChar(200)
+  dueDate    String    @db.VarChar(10)
+  completed  Boolean   @default(false)
+  createdAt  DateTime  @default(now()) @db.DateTime(3)
+  updatedAt  DateTime  @updatedAt @db.DateTime(3)
+  milestone  Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+
+  @@index([milestoneId, dueDate])
 }
