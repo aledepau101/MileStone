@@ -348,7 +348,8 @@ function getUploadMiddleware(req, res, next) {
 }
 
 function getFileType(file) {
-  const fileName = sanitizeFileName(file.originalname);
+  const decodedName = Buffer.from(file.originalname, "latin1").toString("utf8");
+  const fileName = sanitizeFileName(decodedName);
   if (!fileName) {
     throw new WorkspaceError(400, "The file must have a valid name.");
   }
