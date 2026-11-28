@@ -394,3 +394,370 @@
         gap: 4px;
     }
 }
+
+.thesis-milestone-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e4ebe6;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.thesis-milestone-summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 9px 10px;
+}
+
+.thesis-milestone-expand {
+    display: grid;
+    width: 25px;
+    height: 25px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid #6b9b80;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #075139;
+    font: inherit;
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.thesis-milestone-main {
+    grid-template-columns: minmax(0, 1fr) minmax(125px, 190px);
+}
+
+.thesis-milestone-actions {
+    flex-wrap: wrap;
+}
+
+.thesis-page .thesis-task-toggle,
+.thesis-page .thesis-task-add-button,
+.thesis-page .thesis-task-retry {
+    min-width: 0;
+    margin: 0;
+    padding: 8px 12px;
+    border: 1px solid #a8c8b5;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #204f37;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.thesis-page .thesis-task-add-button {
+    padding: 7px 11px;
+    white-space: nowrap;
+}
+
+.thesis-page .thesis-task-retry {
+    margin: 0 14px 10px;
+}
+
+.thesis-page .thesis-task-toggle:hover,
+.thesis-page .thesis-task-add-button:hover,
+.thesis-page .thesis-task-retry:hover {
+    background: #f0f7f3;
+}
+
+.thesis-page .thesis-task-toggle:disabled,
+.thesis-page .thesis-task-add-button:disabled,
+.thesis-page .thesis-task-retry:disabled {
+    opacity: 0.58;
+    cursor: not-allowed;
+}
+
+.thesis-task-panel {
+    border-top: 1px solid #e4ebe6;
+}
+
+.thesis-task-panel[hidden] {
+    display: none;
+}
+
+.thesis-task-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 36px;
+    padding: 5px 10px 5px 14px;
+    background: #e7f2ed;
+}
+
+.thesis-task-panel-header h3 {
+    margin: 0;
+    color: #14281e;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.thesis-task-status,
+.thesis-task-empty,
+.thesis-task-context {
+    margin: 0;
+    padding: 10px 14px;
+    color: #52635a;
+    font-size: 13px;
+}
+
+.thesis-task-empty {
+    color: #6b7a71;
+}
+
+.thesis-task-error {
+    margin: 0;
+    color: #b42318;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.thesis-task-row .thesis-task-error {
+    grid-column: 1 / -1;
+}
+
+.thesis-task-field .thesis-task-error {
+    padding: 0;
+}
+
+.thesis-task-list {
+    display: grid;
+    margin: 0;
+    padding: 2px 14px 6px;
+    list-style: none;
+}
+
+.thesis-task-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) minmax(125px, 190px) auto;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+    padding: 7px 0;
+    border-bottom: 1px solid #eef2ef;
+}
+
+.thesis-task-row:last-child {
+    border-bottom: 0;
+}
+
+.thesis-task-checkbox {
+    display: grid;
+    width: 20px;
+    height: 20px;
+    place-content: center;
+    margin: 0;
+    appearance: none;
+    border: 2px solid #98a39c;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.thesis-task-checkbox::before {
+    content: "";
+    width: 9px;
+    height: 5px;
+    transform: rotate(-45deg) scale(0);
+    border-bottom: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+}
+
+.thesis-task-checkbox:checked {
+    border-color: #278460;
+    background: #278460;
+}
+
+.thesis-task-checkbox:checked::before {
+    transform: rotate(-45deg) scale(1);
+}
+
+.thesis-task-checkbox:disabled {
+    cursor: wait;
+}
+
+.thesis-task-checkbox:focus-visible {
+    outline: 2px solid #204f37;
+    outline-offset: 3px;
+}
+
+.thesis-task-name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: #14281e;
+    font-size: 13px;
+}
+
+.thesis-task-row.is-completed .thesis-task-name {
+    color: #6b7a71;
+    text-decoration: line-through;
+}
+
+.thesis-task-date {
+    color: #52635a;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.thesis-task-completed {
+    justify-self: start;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #d1e9dc;
+    color: #075139;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.thesis-task-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(160px, 1fr) auto;
+    align-items: end;
+    gap: 10px 14px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #e4ebe6;
+    background: #fbfdfc;
+}
+
+.thesis-task-form[hidden] {
+    display: none;
+}
+
+.thesis-task-context {
+    grid-column: 1 / -1;
+    padding: 0;
+    color: #52635a;
+    font-size: 12px;
+}
+
+.thesis-task-field {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.thesis-task-field label {
+    color: #14281e;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.thesis-task-field label span {
+    color: #b42318;
+}
+
+.thesis-task-field input {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 9px 10px;
+    border: 1px solid #d0dbd4;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #14281e;
+    font: inherit;
+}
+
+.thesis-task-field input:focus {
+    border-color: #789784;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgb(32 79 55 / 10%);
+}
+
+.thesis-task-field input[aria-invalid="true"] {
+    border-color: #b42318;
+}
+
+.thesis-task-field input:disabled {
+    background: #f5f7f6;
+    color: #6b7a71;
+    cursor: not-allowed;
+}
+
+.thesis-task-form-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.thesis-task-form-actions button {
+    min-height: 40px;
+    margin: 0;
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+.thesis-task-form-error {
+    grid-column: 1 / -1;
+    padding: 0;
+}
+
+@media (max-width: 900px) {
+    .thesis-task-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .thesis-task-form-actions,
+    .thesis-task-form-error {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 700px) {
+    .thesis-milestone-summary {
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: start;
+    }
+
+    .thesis-milestone-expand {
+        grid-row: 1 / span 2;
+    }
+
+    .thesis-milestone-main {
+        grid-column: 2;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+    }
+
+    .thesis-milestone-actions {
+        grid-column: 2;
+        justify-content: flex-start;
+    }
+
+    .thesis-task-row {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 8px 12px;
+    }
+
+    .thesis-task-date {
+        grid-column: 2;
+    }
+
+    .thesis-task-completed {
+        grid-column: 3;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .thesis-task-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .thesis-task-form-actions,
+    .thesis-task-form-error,
+    .thesis-task-context {
+        grid-column: auto;
+    }
+
+    .thesis-task-form-actions button {
+        flex: 1;
+    }
+}
