@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#204f37">
+        <title>Workspace | MileStone</title>
+
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/schedule-planner.css">
+        <link rel="stylesheet" href="css/workspace.css">
+        <script src="js/workspace.js" defer></script>
+        <script src="js/logout.js" defer></script>
+    </head>
+    <body class="planner-page workspace-page">
+        <header class="planner-header">
+            <a href="dashboard.html" class="planner-brand">MileStone</a>
+            <div class="planner-header-actions">
+                <span class="planner-notification" role="img" aria-label="Notifications">
+                    <svg width="22" height="22" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
+                </span>
+                <span class="planner-profile" role="button" tabindex="0"
+                    aria-label="Log out" title="Log out">&#9786;</span>
+            </div>
+        </header>
+
+        <div class="planner-layout">
+            <aside class="planner-sidebar">
+                <nav aria-label="Main navigation">
+                    <a href="dashboard.html">
+                        <span class="nav-icon" aria-hidden="true">&#8962;</span>
+                        Dashboard
+                    </a>
+                    <a href="schedule-planner.html">
+                        <span class="nav-icon" aria-hidden="true">&#128197;</span>
+                        Schedule Planner
+                    </a>
+                    <a href="thesis-milestones.html">
+                        <span class="nav-icon" aria-hidden="true">&#10003;</span>
+                        Thesis Milestones
+                    </a>
+                    <a href="workspace.html" class="active" aria-current="page">
+                        <span class="nav-icon" aria-hidden="true">&#128193;</span>
+                        Workspace
+                    </a>
+                </nav>
+            </aside>
+
+            <main class="planner-main workspace-main">
+                <div class="planner-title-row workspace-title-row">
+                    <div>
+                        <h1>My Thesis Workspace</h1>
+                        <p>Keep your drafts, notes, and research organized in one place.</p>
+                    </div>
+                    <div class="workspace-add-wrap">
+                        <button id="workspace-add-button" class="add-event-btn" type="button"
+                            aria-expanded="false" aria-controls="workspace-add-menu">
+                            <span aria-hidden="true">＋</span> Add
+                        </button>
+                        <div id="workspace-add-menu" class="workspace-add-menu" hidden>
+                            <button type="button" data-action="new-folder">New folder</button>
+                            <button type="button" data-action="upload">Upload file</button>
+                            <button type="button" data-action="new-note">New note</button>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="workspace-page-error" class="workspace-error" role="alert" hidden></p>
+
+                <section id="workspace-root-tiles" class="workspace-root-tiles"
+                    aria-label="Workspace folders" aria-live="polite"></section>
+
+                <div class="workspace-content">
+                    <section class="workspace-panel workspace-folder-panel"
+                        aria-labelledby="workspace-folder-heading">
+                        <nav aria-label="Folder breadcrumbs">
+                            <ol id="workspace-breadcrumbs" class="workspace-breadcrumbs"></ol>
+                        </nav>
+                        <div class="workspace-panel-heading">
+                            <h2 id="workspace-folder-heading">Loading folder...</h2>
+                            <p id="workspace-folder-error" class="workspace-error" role="alert" hidden></p>
+                        </div>
+                        <p id="workspace-empty" class="workspace-empty" hidden></p>
+                        <ul id="workspace-entries" class="workspace-entries" aria-live="polite"></ul>
+                    </section>
+
+                    <aside class="workspace-panel workspace-recent-panel"
+                        aria-labelledby="workspace-recent-heading">
+                        <h2 id="workspace-recent-heading">
+                            <span class="workspace-panel-icon" aria-hidden="true">&#128196;</span>
+                            Recent Files &amp; Notes
+                        </h2>
+                        <p id="workspace-recent-empty" class="workspace-empty" hidden>
+                            Your recent files and notes will appear here.
+                        </p>
+                        <ul id="workspace-recent-list" class="workspace-recent-list"
+                            aria-live="polite"></ul>
+                    </aside>
+                </div>
+            </main>
+        </div>
+
+        <dialog id="workspace-dialog" class="workspace-dialog"
+            aria-labelledby="workspace-dialog-title">
+            <div class="workspace-dialog-header">
+                <h2 id="workspace-dialog-title"></h2>
+                <button id="workspace-dialog-close" type="button"
+                    aria-label="Close dialog">&times;</button>
+            </div>
+            <form id="workspace-dialog-form" novalidate>
+                <div id="workspace-dialog-fields" class="workspace-dialog-fields"></div>
+                <p id="workspace-dialog-error" class="workspace-error" role="alert" hidden></p>
+                <div class="workspace-dialog-actions">
+                    <button id="workspace-dialog-cancel" class="cancel-edit-btn" type="button">
+                        Cancel
+                    </button>
+                    <button id="workspace-dialog-submit" class="add-event-btn" type="submit">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </dialog>
+    </body>
+</html>

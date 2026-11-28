@@ -35,7 +35,7 @@ npm install
    ```
    Open `http://localhost:3000`; `/` redirects to the login page. `GET /api/health` checks the database connection and reports the user count.
 
-The server serves only `/css`, `/js`, and `login.html`, `signup.html`, `dashboard.html`, `schedule-planner.html`, and `thesis-milestones.html`; it does not expose the repository root as static content.
+The server serves only `/css`, `/js`, and `login.html`, `signup.html`, `dashboard.html`, `schedule-planner.html`, `thesis-milestones.html`, and `workspace.html`; it does not expose the repository root as static content.
 
 ## Database migrations
 
@@ -64,9 +64,11 @@ Apply migrations with `npm run db:migrate` (`prisma migrate deploy`). Do not use
 
 3. **Thesis Milestones.** A logged-in user can set a thesis final deadline and add, edit, or delete milestones. Milestones are stored in MySQL and listed by target date. A milestone date cannot be later than the final deadline.
 
+4. **Workspace.** A user can organize notes, uploads, and nested folders under the four default workspace folders. Workspace data is stored in MySQL through the API. Uploads are limited to PDF, DOCX, and TXT files up to 5 MiB each, with a 50 MiB per-user file quota.
+
 ## Testing the Features
 
-**Automated tests** (sign up, login, and planner logic):
+**Automated tests** (database-backed API tests require the Prisma schema to be migrated first):
 ```
 node --test
 ```
@@ -91,6 +93,14 @@ node --test
 2. Set a final deadline, then add milestones with names and target dates on or before that date.
 3. Confirm milestones appear in date order, can be edited and deleted, and remain after refreshing the page.
 4. Try adding a milestone without a name or with a target date after the final deadline. Confirm the page shows an inline error.
+
+**Workspace (manual)**
+1. Open `http://localhost:3000/workspace.html` while logged in.
+2. Confirm the four default folders and Thesis Sections subfolders appear, and that selecting folders updates breadcrumbs and contents.
+3. Add a folder, a note, and a supported file. Confirm counts and Recent Files & Notes update and remain after refreshing.
+4. Edit or rename an item, download an upload, and confirm the download matches the original.
+5. Delete an item or folder and confirm the confirmation reports the items and folders that will be removed.
+6. Try an unsupported file, an upload over 5 MiB, and a note over 100,000 characters; confirm the page reports the validation errors.
 
 ## AI Usage Disclosure
 We used GitHub Copilot (agent mode) and the Figma MCP Server to build the Sprint 1 features. The Figma MCP Server gave Copilot the layout, colors, and components from our Figma frames, and Copilot generated first drafts of the HTML, CSS, JavaScript, and tests from our issues' acceptance criteria. We reviewed all generated code, tested each acceptance criterion by hand and with automated tests (`node --test`), and fixed the problems we found, including a bug where the week view placed early-morning events in the 8 AM row.
