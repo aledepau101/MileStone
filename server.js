@@ -35,6 +35,7 @@ app.use("/api/auth", require("./src/routes/auth"));
 app.use("/api/events", require("./src/routes/events")); //new
 app.use("/api/thesis", require("./src/routes/thesis"));
 app.use("/api/milestones", require("./src/routes/milestones"));
+app.use("/api/tasks", require("./src/routes/tasks"));
 app.get("/:page", (request, response, next) => {
   if (!publicPages.has(request.params.page)) {
     next();
