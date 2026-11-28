@@ -16,6 +16,7 @@ model User {
   createdAt     DateTime       @default(now()) @db.DateTime(3)
   calendarEvents CalendarEvent[]
   thesisProject ThesisProject?
+  workspaceFolders WorkspaceFolder[]
 }
 
 model CalendarEvent {
@@ -56,4 +57,43 @@ model Milestone {
   thesisProject   ThesisProject @relation(fields: [thesisProjectId], references: [id], onDelete: Cascade)
 
   @@index([thesisProjectId, targetDate])
+}
+
+enum WorkspaceItemKind {
+  upload
+  note
+}
+
+model WorkspaceFolder {
+  id        String            @id @default(uuid()) @db.VarChar(36)
+  userId    String            @db.VarChar(36)
+  parentId  String?           @db.VarChar(36)
+  name      String            @db.VarChar(100)
+  rootKey   String?           @db.VarChar(32)
+  createdAt DateTime          @default(now()) @db.DateTime(3)
+  updatedAt DateTime          @updatedAt @db.DateTime(3)
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent    WorkspaceFolder?  @relation("WorkspaceFolderHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  WorkspaceFolder[] @relation("WorkspaceFolderHierarchy")
+  items     WorkspaceItem[]
+
+  @@unique([userId, rootKey])
+  @@index([userId, parentId])
+}
+
+model WorkspaceItem {
+  id        String            @id @default(uuid()) @db.VarChar(36)
+  folderId  String            @db.VarChar(36)
+  kind      WorkspaceItemKind
+  name      String            @db.VarChar(200)
+  mimeType  String?           @db.VarChar(100)
+  size      Int?
+  fileData  Bytes?            @db.LongBlob
+  text      String?           @db.LongText
+  createdAt DateTime          @default(now()) @db.DateTime(3)
+  updatedAt DateTime          @updatedAt @db.DateTime(3)
+  folder    WorkspaceFolder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
+
+  @@index([folderId, updatedAt])
+  @@index([folderId, name])
 }
